@@ -1,0 +1,42 @@
+#controls-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.controls-left {
+    display: flex;
+    justify-content: flex-start;
+    width: fit-content;
+}
+
+.controls-right {
+    display: flex;
+    justify-content: flex-end;
+    width: fit-content;
+}
+
+.ctl-btn {
+    border: 2px darkslategray solid;
+
+    width: 80px;
+    height: 80px;
+    font-size: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+.speak-btn {
+    background-color: #28a745;
+}
+
+.clear-btn {
+    background-color: #dc3545;
+}
+
+.admin-enter-btn, .admin-exit-btn {
+    background-color: #666363;
+}

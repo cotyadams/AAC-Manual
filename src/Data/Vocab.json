@@ -1,0 +1,192 @@
+[
+  {
+    "id": "eat",
+    "label": "Eat",
+    "icon": "🍎",
+    "description": "I want to eat",
+    "children": [
+      {
+        "id": "apple",
+        "label": "Apple",
+        "icon": "🍎",
+        "description": "I want an apple",
+        "children": []
+      },
+      {
+        "id": "banana",
+        "label": "Banana",
+        "icon": "🍌",
+        "description": "I want a banana",
+        "children": []
+      },
+      {
+        "id": "bread",
+        "label": "Bread",
+        "icon": "🍞",
+        "description": "I want bread",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "drink",
+    "label": "Drink",
+    "icon": "🥤",
+    "description": "I want to drink",
+    "children": [
+      {
+        "id": "water",
+        "label": "Water",
+        "icon": "💧",
+        "description": "I want water",
+        "children": []
+      },
+      {
+        "id": "juice",
+        "label": "Juice",
+        "icon": "🧃",
+        "description": "I want juice",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "play",
+    "label": "Play",
+    "icon": "🎮",
+    "description": "Let's play",
+    "children": [
+      {
+        "id": "games",
+        "label": "Games",
+        "icon": "🎲",
+        "description": "I want to play games",
+        "children": []
+      },
+      {
+        "id": "music",
+        "label": "Music",
+        "icon": "🎵",
+        "description": "Play music",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "feelings",
+    "label": "Feelings",
+    "icon": "😊",
+    "description": "How do I feel?",
+    "children": [
+      {
+        "id": "happy",
+        "label": "Happy",
+        "icon": "😄",
+        "description": "I am happy",
+        "children": []
+      },
+      {
+        "id": "sad",
+        "label": "Sad",
+        "icon": "😢",
+        "description": "I am sad",
+        "children": []
+      },
+      {
+        "id": "angry",
+        "label": "Angry",
+        "icon": "😠",
+        "description": "I am angry",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "go",
+    "label": "Go",
+    "icon": "🚶",
+    "description": "Let's go",
+    "children": [
+      {
+        "id": "outside",
+        "label": "Outside",
+        "icon": "☀️",
+        "description": "I want to go outside",
+        "children": []
+      },
+      {
+        "id": "park",
+        "label": "Park",
+        "icon": "🌳",
+        "description": "Let's go to the park",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "help",
+    "label": "Help",
+    "icon": "🙋",
+    "description": "I need help",
+    "children": [
+      {
+        "id": "open",
+        "label": "Open",
+        "icon": "📂",
+        "description": "Please open this",
+        "children": []
+      },
+      {
+        "id": "close",
+        "label": "Close",
+        "icon": "🔒",
+        "description": "Please close this",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "more",
+    "label": "More",
+    "icon": "➕",
+    "description": "I want more",
+    "children": [
+      {
+        "id": "please",
+        "label": "Please",
+        "icon": "🙏",
+        "description": "Please give me more",
+        "children": []
+      },
+      {
+        "id": "thank",
+        "label": "Thank you",
+        "icon": "👍",
+        "description": "Thank you!",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "stop",
+    "label": "Stop",
+    "icon": "⏹️",
+    "description": "Stop that",
+    "children": [
+      {
+        "id": "no",
+        "label": "No",
+        "icon": "❌",
+        "description": "I don't want this",
+        "children": []
+      },
+      {
+        "id": "wait",
+        "label": "Wait",
+        "icon": "⏳",
+        "description": "Wait a moment",
+        "children": []
+      }
+    ]
+  }
+]

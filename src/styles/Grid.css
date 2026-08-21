@@ -1,0 +1,38 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(88px, 12vw, 160px), 1fr));
+  grid-auto-rows: minmax(clamp(88px, 12vw, 160px), auto);
+  gap: clamp(8px, 1.5vw, 16px);
+  padding: clamp(8px, 1.5vw, 16px);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  align-content: start;
+}
+
+.grid-node {
+  aspect-ratio: 1 / 1;
+  min-width: 64px;
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 2px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  touch-action: manipulation; /* prevents double-tap zoom delay */
+}
+
+.grid-node-icon {
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  line-height: 1;
+}
+
+.grid-node-label {
+  font-size: clamp(1rem, 2.4vw, 1.6rem);
+  margin-top: 4px;
+  text-align: center;
+}
