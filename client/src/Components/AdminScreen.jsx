@@ -7,10 +7,8 @@ export default function AdminScreen() {
         apiCalls.fetchAllNodes().then(setData).then(console.log((data)));
     }, [])
     return (
-        <div className="admin-form-container">
+        <div className="admin-screen-container">
             <button className="grid-node" >
-                <span> + </span>
-                <span>add</span>
             </button>
         </div>
     )

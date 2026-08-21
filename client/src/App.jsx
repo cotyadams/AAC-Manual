@@ -10,7 +10,7 @@ import AdminForm from './Components/AdminScreen.jsx';
 function App() {
   const [ttsContent, setTTsContent] = useState('');
   const [showPassForm, setShowPassForm] = useState(false)
-  const [showAdminForm, setShowAdminForm] = useState(false)
+  const [showAdminScreen, setShowAdminScreen] = useState(false)
   console.log(apiCalls)
   return (
     <div className="App">
@@ -22,7 +22,7 @@ function App() {
         <Controls
           ttsContent={ttsContent} setTTsContent={setTTsContent}
           showPassForm={showPassForm} setShowPassForm={setShowPassForm}
-          showAdminForm={showAdminForm} setShowAdminForm={setShowAdminForm}
+          showAdminScreen={showAdminScreen} setShowAdminScreen={setShowAdminScreen}
         />
 
         <Grid
@@ -31,13 +31,9 @@ function App() {
         {
         showPassForm &&
           <AuthenticationForm
-            showAdminForm={showAdminForm} setShowAdminForm={setShowAdminForm}
+            showAdminScreen={showAdminScreen} setShowAdminScreen={setShowAdminScreen}
             showPassForm={showPassForm} setShowPassForm={setShowPassForm}
           />
-        }
-        {
-          showAdminForm &&
-          <AdminForm />
         }
       </div >
     </div>

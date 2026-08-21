@@ -1,7 +1,7 @@
 import '../styles/Controls.css'
 import speak from '../Functions/speak';
 
-function Controls({ ttsContent, setTTsContent, setShowPassForm, showPassForm, showAdminForm, setShowAdminForm }) {
+function Controls({ ttsContent, setTTsContent, setShowPassForm, showPassForm, showAdminScreen, setShowAdminScreen }) {
     return (
         <div id="controls-container">
             <div className="controls-left">
@@ -19,13 +19,19 @@ function Controls({ ttsContent, setTTsContent, setShowPassForm, showPassForm, sh
                 >
                     🔍
                 </button>
+                {showAdminScreen && <button
+                    className="ctl-btn add-btn"
+                    title="add TTS button"
+                >
+                    +
+                </button>}
             </div>
             <div className="controls-right">
                 {true ? (
                     <button
                         onClick={() => {
-                            if (!showAdminForm) setShowPassForm(!showPassForm);
-                            setShowAdminForm(false)
+                            if (!showAdminScreen) setShowPassForm(!showPassForm);
+                            setShowAdminScreen(false)
                         }}
                         className="ctl-btn admin-exit-btn"
                         title="Exit admin mode"

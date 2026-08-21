@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function AuthenticationForm({ showAdminForm, setShowAdminForm, setShowPassForm, showPassForm }) {
+export default function AuthenticationForm({ showAdminScreen, setShowAdminScreen, setShowPassForm, showPassForm }) {
 
     const [password, setPassword] = useState('')
 
@@ -9,7 +9,7 @@ export default function AuthenticationForm({ showAdminForm, setShowAdminForm, se
             <form onSubmit={() => {
                 if (password === '123') {
                     console.log(password)
-                    authenticate(setShowAdminForm, setShowPassForm)
+                    authenticate(setShowAdminScreen, setShowPassForm)
                 }
             }}
             >
@@ -23,8 +23,8 @@ export default function AuthenticationForm({ showAdminForm, setShowAdminForm, se
     )
 }
 
-function authenticate(setShowAdminForm, setShowPassForm) {
+function authenticate(setShowAdminScreen, setShowPassForm) {
     event.preventDefault();
     setShowPassForm(false)
-    setShowAdminForm(true)
+    setShowAdminScreen(true)
 }
