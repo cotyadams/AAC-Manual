@@ -27,13 +27,21 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
 
     return (
         <div className="admin-form">
-            <form onSubmit={(e) => {
-                e.preventDefault()
-                isSelectLeaf.id ?
-                    apiCalls.updateNode(isSelectLeaf.id, { ...node })
+            <form onSubmit={
+                node.id ?
+                    (e) => {
+                        e.preventDefault();
+                        console.log('true')
+                        apiCalls.updateNode(isSelectLeaf.id, { ...node })
+                        setShowAdminForm(false)
+                        setIsSelectLeaf({})
+                    }
                     :
-                    apiCalls.createNode(node)
-            }}>
+                    () => {
+                        console.log('false')
+                        apiCalls.createNode(node)
+                    }
+            }>
                 <input
                     className="label-input"
                     value={node.label}
@@ -79,7 +87,6 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
                         onClick={
                             node.id ?
                                 () => {
-                                    console.log('delete click true')
                                     apiCalls.deleteNode(node.id)
                                     setNode(newNode);
                                     setShowAdminForm(false);
@@ -87,7 +94,6 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
                                 }
                                 :
                                 () => {
-                                    console.log('delete click false')
                                     setNode(newNode)
                                     setShowAdminForm(false)
                                     setIsSelectLeaf({})

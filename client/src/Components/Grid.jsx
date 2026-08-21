@@ -15,7 +15,6 @@ export default function Grid({
   setShowAdminForm
 }) {
   const [data, setData] = fetchData();
-  console.log("grid", data)
   return (
     <div className="grid">
       {data.map(node => (

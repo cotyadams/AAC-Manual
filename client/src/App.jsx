@@ -26,7 +26,6 @@ function App() {
 
   const [data, setData] = fetchData();
 
-  console.log(data)
   return (
     <div className="App">
       <div className="app-main">

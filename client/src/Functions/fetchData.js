@@ -5,7 +5,7 @@ export default function fetchData() {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        apiCalls.fetchAllNodes().then(setData).then(console.log((data)));
+        apiCalls.fetchAllNodes().then(setData);
     }, [])
     return [data, setData]
 }
