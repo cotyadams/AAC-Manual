@@ -7,4 +7,5 @@
     border: 2px solid #ccc;
     border-radius: 8px;
     transition: border-color 0.2s ease;
+    text-align: center;
 }

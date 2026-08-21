@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react'
 import * as apiCalls from '../Nodeapi'
 
+
+// {
+//     label: "Eat",
+//     icon: "🍎",
+//     description: "I want to eat",
+//     children: [],
+//     parents: []
+// }
+
 export default function AdminScreen() {
     let [data, setData] = useState([])
     useEffect(() => {
@@ -8,8 +17,12 @@ export default function AdminScreen() {
     }, [])
     return (
         <div className="admin-screen-container">
-            <button className="grid-node" >
-            </button>
+            { data ? data.map(node =>
+                <button className="grid-node" aria-label={node.label} >
+                    <span className="grid-node-icon" aria-hidden="true">{node.icon}</span>
+                    <span className="grid-node-label">{node.label}</span>
+                </button>
+            ) : null }
         </div>
     )
 }

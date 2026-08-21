@@ -1,0 +1,173 @@
+/* AdminForm.css
+   Light, calm, professional theme for an AAC admin form (used to add/edit
+   symbols for a non-verbal child's board). Layout is a single column that
+   fills the full remaining height of the screen with no scrolling; each
+   row grows/shrinks together as the viewport resizes or rotates. Only
+   .selection-container breaks the column, laying its two buttons out
+   side by side. */
+
+:root {
+  --aac-bg: #f4f7f9;          /* soft off-white, easy on the eyes */
+  --aac-panel: #ffffff;
+  --aac-border: #d7dee3;
+  --aac-border-focus: #2f8f8a;
+  --aac-text: #24333a;
+  --aac-placeholder: #8a99a1;
+  --aac-accent: #2f8f8a;      /* calm teal, professional and friendly */
+  --aac-accent-hover: #267a76;
+  --aac-accent-soft: #e4f2f1;
+  --aac-shadow: 0 1px 3px rgba(24, 43, 48, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.node-options-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+.admin-form {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 2vh 2vw;
+  background: var(--aac-bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden; /* never scroll */
+}
+
+.admin-form form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 1.5vh;
+  width: 100%;
+  height: 100%;
+  background: var(--aac-panel);
+  border: 1px solid var(--aac-border);
+  border-radius: 16px;
+  padding: 2.5vh 2vw;
+  box-shadow: var(--aac-shadow);
+}
+
+/* Every direct row (inputs, selection container, save button) shares the
+   column's height evenly */
+.admin-form form > * {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+/* Shared field styling */
+.admin-form input,
+.admin-form button {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  border-radius: 10px;
+  border: 1.5px solid var(--aac-border);
+  background: var(--aac-panel);
+  color: var(--aac-text);
+  font-size: clamp(14px, 2.4vh, 20px);
+  padding: 0 1.2vw;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-form input::placeholder {
+  color: var(--aac-placeholder);
+}
+
+.admin-form input:focus,
+.admin-form button:focus-visible {
+  border-color: var(--aac-border-focus);
+  box-shadow: 0 0 0 3px var(--aac-accent-soft);
+}
+
+/* Selection container: its own row-within-a-row, buttons side by side */
+.selection-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2vw;
+}
+
+.children-selection,
+.parents-selection {
+  flex: 1 1 50%;
+  height: 100%;
+  background: var(--aac-accent-soft);
+  border: 1.5px solid var(--aac-border);
+  color: var(--aac-text);
+  font-weight: 600;
+  font-size: clamp(14px, 2.2vh, 18px);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.children-selection:hover,
+.parents-selection:hover {
+  background: #d9ecea;
+  border-color: var(--aac-accent);
+}
+
+/* Save button: clearly primary, but same height rhythm as the rest */
+.save-button, 
+.delete-button {
+  background: var(--aac-accent);
+  border: 1.5px solid var(--aac-accent);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: clamp(15px, 2.6vh, 20px);
+  letter-spacing: 0.02em;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.save-button:hover, 
+.delete-button:hover {
+  background: var(--aac-accent-hover);
+  border-color: var(--aac-accent-hover);
+}
+
+/* Narrow / portrait tuning: keep the same column structure, just tighten
+   spacing and type size so everything still fits without scrolling */
+@media (max-width: 500px) {
+  .admin-form {
+    padding: 1.5vh 3vw;
+  }
+
+  .admin-form form {
+    gap: 1.2vh;
+    padding: 2vh 3vw;
+  }
+
+  .admin-form input,
+  .children-selection,
+  .parents-selection,
+  .save-button {
+    font-size: clamp(13px, 2.4vh, 17px);
+  }
+}
+
+.icon-input {
+    text-align: center;
+}
+
+/* Very short / landscape phone: shrink gaps and padding further */
+@media (max-height: 420px) {
+  .admin-form form {
+    gap: 0.8vh;
+    padding: 1.5vh 2vw;
+  }
+}

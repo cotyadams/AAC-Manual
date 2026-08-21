@@ -23,8 +23,8 @@ export default function AuthenticationForm({ showAdminScreen, setShowAdminScreen
     )
 }
 
-function authenticate(setShowAdminScreen, setShowPassForm) {
+async function authenticate(setShowAdminScreen, setShowPassForm) {
     event.preventDefault();
-    setShowPassForm(false)
-    setShowAdminScreen(true)
+    setShowPassForm(false);
+    setShowAdminScreen(true);
 }
