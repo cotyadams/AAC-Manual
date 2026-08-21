@@ -1,7 +1,7 @@
 import '../styles/Controls.css'
 import speak from '../Functions/speak';
 
-function Controls({ttsContent, setTTsContent}) {
+function Controls({ ttsContent, setTTsContent, setShowPassForm, showPassForm, showAdminForm, setShowAdminForm }) {
     return (
         <div id="controls-container">
             <div className="controls-left">
@@ -23,7 +23,10 @@ function Controls({ttsContent, setTTsContent}) {
             <div className="controls-right">
                 {true ? (
                     <button
-                        onClick={() => console.log('click')}
+                        onClick={() => {
+                            if (!showAdminForm) setShowPassForm(!showPassForm);
+                            setShowAdminForm(false)
+                        }}
                         className="ctl-btn admin-exit-btn"
                         title="Exit admin mode"
                     >
