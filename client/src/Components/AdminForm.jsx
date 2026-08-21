@@ -22,6 +22,7 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
     }
     const [node, setNode] = useState(isSelectLeaf.id ? () => {
         setShowAdminForm(true)
+        setShowAdminScreen(false)
         return isSelectLeaf
     } : newNode)
 
@@ -34,12 +35,17 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
                         console.log('true')
                         apiCalls.updateNode(isSelectLeaf.id, { ...node })
                         setShowAdminForm(false)
+                        setShowAdminScreen(true)
                         setIsSelectLeaf({})
                     }
                     :
-                    () => {
+                    (e) => {
+                        e.preventDefault();
                         console.log('false')
                         apiCalls.createNode(node)
+                        setShowAdminForm(false)
+                        setShowAdminScreen(true)
+
                     }
             }>
                 <input
@@ -90,12 +96,16 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
                                     apiCalls.deleteNode(node.id)
                                     setNode(newNode);
                                     setShowAdminForm(false);
+                                    setShowAdminScreen(true)
+
                                     setIsSelectLeaf({})
                                 }
                                 :
                                 () => {
                                     setNode(newNode)
                                     setShowAdminForm(false)
+                                    setShowAdminScreen(true)
+
                                     setIsSelectLeaf({})
                                 }
                         }

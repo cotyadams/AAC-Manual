@@ -12,6 +12,7 @@
 }
 
 .grid-node {
+  container-type: inline-size; /* enables cqw/cqh for children */
   aspect-ratio: 1 / 1;
   min-width: 64px;
   min-height: 64px;
@@ -23,16 +24,19 @@
   border: 2px solid #ccc;
   background: #fff;
   cursor: pointer;
-  touch-action: manipulation; /* prevents double-tap zoom delay */
+  touch-action: manipulation;
+  overflow: hidden; /* safety net if a label is too long */
+  padding: 10px
 }
 
 .grid-node-icon {
-  font-size: clamp(2rem, 5vw, 3.75rem);
+  font-size: clamp(1.5rem, 32cqw, 3.75rem);
   line-height: 1;
+  margin: 4px;
 }
 
 .grid-node-label {
-  font-size: clamp(1rem, 2.4vw, 1.6rem);
-  margin-top: 4px;
+  font-size: clamp(0.75rem, 14cqw, 1.6rem);
+  margin: 4px;
   text-align: center;
 }
