@@ -152,29 +152,22 @@ async function onSelect({
     return
   }
   else if (node.children.length > 0) {
-    // add current data to oldData array for future backtracking
-    //backtrack length against array length to prevent duplicate old state at end of train?
-
-    console.log('children: ', node.children)
-    setOldData([...oldData, data]);
-    setOldParentIds([...oldParentIds, currentParentId]);
-    setCurrentParentId(node.id);
-
-    console.log("oldData onFunction: ", oldData)
-    console.log("oldData.len onFunction: ", oldData.length)
-
+    // fetch the child nodes BEFORE touching any navigation state. If we
+    // update oldData/currentParentId first and only set `data` once the
+    // fetches resolve, React renders an in-between frame where `data`
+    // still holds the previous layer's full node list but Grid's
+    // isHome check has already flipped -- which briefly shows the raw
+    // (unfiltered) list before the real child data lands. Fetching first
+    // and committing all the state together avoids that extra render.
     let newData = [];
-
-    // node.children.map(async (childID) => {
-    //   newData = [...newData, await apiCalls.fetchNode(childID)];
-    // })
     for (let i = 0; i < node.children.length; i++) {
       newData = [...newData, await apiCalls.fetchNode(node.children[i])]
     }
 
-    console.log("newData: ", newData)
-    console.log("oldData: ", oldData)
-    setData([...newData])
+    setOldData([...oldData, data]);
+    setOldParentIds([...oldParentIds, currentParentId]);
+    setCurrentParentId(node.id);
+    setData(newData)
   }
 
   if (node.description) {
