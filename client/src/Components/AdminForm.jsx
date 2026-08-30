@@ -2,6 +2,7 @@ import react, { useState, useEffect } from "react"
 import * as apiCalls from "../Nodeapi"
 import "../styles/admin.css"
 import fetchData from "../Functions/fetchData"
+import navUpLayer from "../Functions/NavUpLayer"
 
 
 // {
@@ -22,7 +23,12 @@ export default function AdminForm({
     data,
     setData,
     showAllNodes,
-    currentParentId
+    currentParentId,
+    setCurrentParentId,
+    oldData,
+    setOldData,
+    oldParentIds,
+    setOldParentIds
 }) {
     const newNode = {
         "label": "",
@@ -142,19 +148,50 @@ export default function AdminForm({
                             node.id ?
                                 async () => {
                                     try {
+                                        let updatedParent = null;
                                         if (!showAllNodes && currentParentId) {
                                             // tree mode with a parent above it: just unlink from that parent
-                                            await apiCalls.updateNode(currentParentId, { removeChildren: [node.id] })
+                                            updatedParent = await apiCalls.updateNode(currentParentId, { removeChildren: [node.id] })
                                         } else {
                                             // view-all mode (or no parent context): delete the node entirely,
                                             // which cascades and removes it from every parent's children in the database
                                             await apiCalls.deleteNode(node.id)
                                         }
-                                        let newData = data.filter((n) => n.id != node.id)
-                                        setData(newData)
+
+                                        // the deleted node's id (and, if we just unlinked it,
+                                        // the parent's fresh children list) is now stale wherever
+                                        // it's cached -- patch every level so nothing needs a refresh
+                                        const stripDeleted = (n) =>
+                                            updatedParent && n.id === updatedParent.id
+                                                ? updatedParent
+                                                : n.children && n.children.includes(node.id)
+                                                    ? { ...n, children: n.children.filter((id) => id !== node.id) }
+                                                    : n
+                                        const newData = data.filter((n) => n.id !== node.id).map(stripDeleted)
+                                        const newOldData = oldData.map((level) => level.filter((n) => n.id !== node.id).map(stripDeleted))
+
                                         setShowAdminForm(false);
-                                        setShowAdminScreen(true)
                                         setIsSelectLeaf({})
+
+                                        if (!showAllNodes && currentParentId && newData.length === 0) {
+                                            // that was the last child in this branch -- back out
+                                            // to the level showing this branch's parent instead of
+                                            // stranding the view on an empty child list
+                                            navUpLayer({
+                                                data: newData,
+                                                setData,
+                                                oldData: newOldData,
+                                                setOldData,
+                                                oldParentIds,
+                                                setOldParentIds,
+                                                setCurrentParentId
+                                            })
+                                        } else {
+                                            setData(newData)
+                                            setOldData(newOldData)
+                                        }
+
+                                        setShowAdminScreen(true)
                                     } catch (err) {
                                         alert(`Failed to delete node: ${err.message}`)
                                     }

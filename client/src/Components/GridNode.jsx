@@ -93,7 +93,21 @@ async function onSelect({
       addChildren: [node.id]
     }
 
-    await apiCalls.updateNode(isSelectLeaf.id, newNode);
+    try {
+      const updatedParent = await apiCalls.updateNode(isSelectLeaf.id, newNode);
+
+      // the parent's cached children list is now stale wherever it's
+      // sitting (current level and every level on the back stack) --
+      // patch it in place so the new child shows up without a refresh
+      const patchParent = (n) => (n.id === updatedParent.id ? updatedParent : n);
+      setData(data.map(patchParent));
+      setOldData(oldData.map((level) => level.map(patchParent)));
+      if (isSelectLeaf.id === updatedParent.id) {
+        setIsSelectLeaf(updatedParent);
+      }
+    } catch (err) {
+      alert(`Failed to add child: ${err.message}`);
+    }
 
     return
   }
@@ -130,8 +144,11 @@ async function onSelect({
     setData([...newData])
   }
 
-  await setTTsContent(ttsContent + node.description + ' ')
-  speak(node.description);
+  if (node.description) {
+    await setTTsContent(ttsContent + node.description + ' ')
+    speak(node.description);
+
+  }
 }
 
 function appendChildItem(node, isSelectLeaf) {

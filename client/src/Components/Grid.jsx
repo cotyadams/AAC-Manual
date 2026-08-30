@@ -31,7 +31,9 @@ export default function Grid({
     if (showAdminScreen && showAllNodes) {
       apiCalls.fetchAllNodes().then(setAllNodes);
     }
-  }, [showAdminScreen, showAllNodes]);
+    // `data` is included so add/delete mutations (which update `data`)
+    // also refresh this flat listing without needing a page reload
+  }, [showAdminScreen, showAllNodes, data]);
 
   // Home (root) only shows nodes flagged topLevel; deeper layers show
   // whatever children were navigated into. Admin's "show all" toggle

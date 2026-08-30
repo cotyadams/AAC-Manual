@@ -91,7 +91,9 @@ function App() {
             addChild={addChild} setAddChild={setAddChild}
             data={data} setData={setData}
             showAllNodes={showAllNodes}
-            currentParentId={currentParentId}
+            currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
+            oldData={oldData} setOldData={setOldData}
+            oldParentIds={oldParentIds} setOldParentIds={setOldParentIds}
 
           />
         }
