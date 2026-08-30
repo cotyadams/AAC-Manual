@@ -1,7 +1,10 @@
-// Downscales an uploaded image file to a small square-bounded thumbnail
-// and returns it as a data: URL, so it's cheap to store in the node's
-// `icon` text column and cheap to render in the grid.
-export default function resizeImageToDataUrl(file, maxSize = 240) {
+// Downscales an uploaded image file to a square-bounded thumbnail and
+// returns it as a data: URL, so it's cheap to store in the node's `icon`
+// text column and cheap to render in the grid. maxSize is generous (well
+// past most nodes' on-screen size, and covers retina displays showing it
+// at a couple hundred CSS px) since a blurry upscaled icon is worse than
+// a few extra KB in the request body.
+export default function resizeImageToDataUrl(file, maxSize = 480) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error("Could not read the selected file"));
@@ -18,7 +21,7 @@ export default function resizeImageToDataUrl(file, maxSize = 240) {
         canvas.height = height;
         canvas.getContext("2d").drawImage(img, 0, 0, width, height);
 
-        resolve(canvas.toDataURL("image/webp", 0.85));
+        resolve(canvas.toDataURL("image/webp", 0.92));
       };
       img.src = reader.result;
     };

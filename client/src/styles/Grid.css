@@ -105,10 +105,12 @@
 .grid-node-icon {
   /* cqmin of the wrap (not the whole node, and not cqw) -- bounded by
      whichever of the wrap's own width/height is smaller, so it's always
-     as large as possible without the emoji overflowing either edge. The
-     rem ceiling is a sanity cap, not a real-world limit (it would only
-     bind on an enormous node), unlike the old fixed 6rem cap. */
-  font-size: clamp(1.75rem, 88cqmin, 30rem);
+     as large as possible without the emoji overflowing either edge.
+     Capped at 8rem (128px): color emoji glyphs are bitmap-based under
+     the hood, and most emoji fonts only ship strikes up to ~128-160px --
+     asking for more just upscales that bitmap and looks blurry instead
+     of actually getting sharper. */
+  font-size: clamp(1.75rem, 75cqmin, 8rem);
   line-height: 1;
 }
 
