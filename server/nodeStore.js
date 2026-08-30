@@ -44,6 +44,7 @@ function createStore(dbPath = 'aac.db') {
       id: row.id,
       label: row.label,
       icon: row.icon,
+      topLevel: !!row.topLevel,
       description: row.description,
       children: getChildIds(row.id),
       parents: getParentIds(row.id),
@@ -102,7 +103,7 @@ function createStore(dbPath = 'aac.db') {
     if (wouldCreateCycle(parentId, childId)) {
       throw new Error(
         `Cannot link ${parentId} -> ${childId}: this would create a cycle ` +
-          `(${childId} can already reach ${parentId}).`
+        `(${childId} can already reach ${parentId}).`
       );
     }
     db.prepare(
@@ -137,14 +138,17 @@ function createStore(dbPath = 'aac.db') {
    * @returns {Object} the newly created node (with resolved parents/children)
    */
   const addNode = db.transaction((data) => {
-    const { label, icon = null, description = null, parentIds = [], childIds = [] } = data;
+    const {
+      label, icon = null, description = null,
+      topLevel = false,
+      parentIds = [], childIds = []
+    } = data;
 
     if (!label) throw new Error('label is required.');
 
     const info = db
-      .prepare('INSERT INTO nodes (label, icon, description) VALUES (?, ?, ?)')
-      .run(label, icon, description);
-
+      .prepare('INSERT INTO nodes (label, icon, description, topLevel) VALUES (?, ?, ?, ?)')
+      .run(label, icon, description, topLevel ? 1 : 0);
     const newId = info.lastInsertRowid;
 
     for (const pId of parentIds) addChild(pId, newId);
@@ -177,6 +181,7 @@ function createStore(dbPath = 'aac.db') {
     if (updates.label !== undefined) fields.label = updates.label;
     if (updates.icon !== undefined) fields.icon = updates.icon;
     if (updates.description !== undefined) fields.description = updates.description;
+    if (updates.topLevel !== undefined) fields.topLevel = updates.topLevel;
 
     if (Object.keys(fields).length > 0) {
       const setClause = Object.keys(fields)

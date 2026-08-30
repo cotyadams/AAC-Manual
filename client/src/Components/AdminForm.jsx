@@ -14,8 +14,8 @@ import fetchData from "../Functions/fetchData"
 
 export default function AdminForm({
     setShowAdminForm,
-    setShowAdminScreen, 
-    isSelectLeaf, 
+    setShowAdminScreen,
+    isSelectLeaf,
     setIsSelectLeaf,
     addChild,
     setAddChild,
@@ -86,6 +86,15 @@ export default function AdminForm({
                             setAddChild(true)
                         }}
                     >Children</button>
+                    <div className="top-level-checkbox-div">
+                        <input
+                            type="checkbox"
+                            className="top-level-checkbox"
+                        />
+                        <h1
+                            className="top-level-label"
+                        >Show on Home?</h1>
+                    </div>
                     <button
                         className="children-selection"
                         placeholder="children"

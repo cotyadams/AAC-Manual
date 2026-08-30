@@ -84,6 +84,26 @@ html, body, #root {
   transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
+.top-level-checkbox-div {
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.top-level-checkbox {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.top-level-label {
+  font-size: 100%;
+  text-align: center;
+  justify-self: center;
+  margin: 0px;
+}
+
 .admin-form input::placeholder {
   color: var(--aac-placeholder);
 }
@@ -99,6 +119,7 @@ html, body, #root {
   display: flex;
   flex-direction: row;
   gap: 1.2vw;
+  align-items: center;
 }
 
 .children-selection,
