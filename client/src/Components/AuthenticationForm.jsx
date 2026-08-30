@@ -6,10 +6,10 @@ export default function AuthenticationForm({ showAdminScreen, setShowAdminScreen
 
     return (
         <div>
-            <form onSubmit={() => {
+            <form onSubmit={(event) => {
                 if (password === '123') {
                     console.log(password)
-                    authenticate(setShowAdminScreen, setShowPassForm)
+                    authenticate(setShowAdminScreen, setShowPassForm, event)
                 }
             }}
             >
@@ -23,7 +23,7 @@ export default function AuthenticationForm({ showAdminScreen, setShowAdminScreen
     )
 }
 
-async function authenticate(setShowAdminScreen, setShowPassForm) {
+async function authenticate(setShowAdminScreen, setShowPassForm, event) {
     event.preventDefault();
     setShowPassForm(false);
     setShowAdminScreen(true);
