@@ -6,6 +6,24 @@ export async function fetchAllNodes() {
   return res.json();
 }
 
+// Full dump of every node/relationship, in the format POST /api/import expects.
+export async function exportData() {
+  const res = await fetch(`${BASE_URL}/export`);
+  if (!res.ok) throw new Error('Failed to export data');
+  return res.json();
+}
+
+// Replaces all nodes/relationships with the contents of a previous exportData() dump.
+export async function importData(payload) {
+  const res = await fetch(`${BASE_URL}/import`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error((await res.json()).error || 'Failed to import data');
+  return res.json();
+}
+
 export async function fetchNode(id) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`);
   if (!res.ok) throw new Error('Failed to fetch node');

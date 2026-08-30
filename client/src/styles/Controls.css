@@ -3,7 +3,7 @@
    The admin button carries `margin-left: auto` below, which pins it
    (and speak/clear after it) to the right edge on a single row, and
    pulls the same group to the right edge of the bottom row if the bar
-   wraps â€” so add-to-children/add-to-parents land on that bottom row
+   wraps Ã¢â‚¬â€ so add-to-children/add-to-parents land on that bottom row
    with admin/speak/clear instead of getting a row of their own. */
 #controls-container {
   display: flex;
@@ -52,6 +52,8 @@
 .add-btn,
 .add-to-children,
 .add-to-parents,
+.export-btn,
+.import-btn,
 .admin-enter-btn,
 .admin-exit-btn {
   background-color: var(--color-neutral);
@@ -73,6 +75,8 @@
 .add-btn:hover,
 .add-to-children:hover,
 .add-to-parents:hover,
+.export-btn:hover,
+.import-btn:hover,
 .admin-enter-btn:hover,
 .admin-exit-btn:hover {
   background-color: var(--color-neutral-hover);
@@ -105,7 +109,9 @@
   text-overflow: ellipsis;
 }
 
-.ctl-btn.toggle-view-btn {
+.ctl-btn.toggle-view-btn,
+.ctl-btn.export-btn,
+.ctl-btn.import-btn {
   width: auto;
   min-width: 80px;
   padding: 0 12px;
@@ -136,7 +142,9 @@
     font-size: 0.85rem;
   }
 
-  .ctl-btn.toggle-view-btn {
+  .ctl-btn.toggle-view-btn,
+  .ctl-btn.export-btn,
+  .ctl-btn.import-btn {
     width: auto;
     min-width: 0;
     max-width: 30vw;
@@ -154,7 +162,9 @@
 
   .ctl-btn.add-to-children,
   .ctl-btn.add-to-parents,
-  .ctl-btn.toggle-view-btn {
+  .ctl-btn.toggle-view-btn,
+  .ctl-btn.export-btn,
+  .ctl-btn.import-btn {
     width: auto;
   }
 }

@@ -1,6 +1,9 @@
+import { useRef } from 'react'
 import '../styles/Controls.css'
 import speak from '../Functions/speak';
 import navUpLayer from '../Functions/NavUpLayer';
+import validateImportPayload from '../Functions/validateImportPayload';
+import * as apiCalls from '../Nodeapi';
 
 function Controls({
     ttsContent,
@@ -32,6 +35,67 @@ function Controls({
     searchActive,
     onToggleSearch
 }) {
+    const importFileRef = useRef(null)
+
+    async function handleExportData() {
+        try {
+            const dump = await apiCalls.exportData()
+            const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' })
+            const url = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = 'aac-export.json'
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+            URL.revokeObjectURL(url)
+        } catch (err) {
+            alert(`Failed to export data: ${err.message}`)
+        }
+    }
+
+    async function handleImportFileChange(e) {
+        const file = e.target.files[0]
+        e.target.value = "" // allow re-selecting the same file later
+        if (!file) return
+
+        let parsed
+        try {
+            parsed = JSON.parse(await file.text())
+        } catch (err) {
+            alert('That file is not valid JSON.')
+            return
+        }
+
+        const validationError = validateImportPayload(parsed)
+        if (validationError) {
+            alert(`That file doesn't look like a valid export: ${validationError}`)
+            return
+        }
+
+        const nodeCount = (Array.isArray(parsed) ? parsed : parsed.nodes).length
+        const confirmed = window.confirm(
+            `This will REPLACE all data currently on this board with the ${nodeCount} node(s) from this file. This cannot be undone. Continue?`
+        )
+        if (!confirmed) return
+
+        try {
+            await apiCalls.importData(parsed)
+            const allNodes = await apiCalls.fetchAllNodes()
+            // reset the view back to Home with the freshly-imported data,
+            // since anything cached from the old dataset (ids included)
+            // may no longer exist
+            setData(allNodes.filter((node) => node.topLevel))
+            setOldData([])
+            setOldParentIds([])
+            setCurrentParentId(null)
+            setIsSelectLeaf({})
+            alert('Import complete.')
+        } catch (err) {
+            alert(`Failed to import data: ${err.message}`)
+        }
+    }
+
     return (
         // All buttons are direct flex children of one wrapping row (rather than
         // split into separate left/right containers) so that when the row runs
@@ -90,6 +154,27 @@ function Controls({
             >
                 {showAllNodes ? "ShowTree" : "Show All"}
             </button>}
+            {showAdminScreen && <button
+                className="btn ctl-btn export-btn"
+                title="Download all board data as a JSON file"
+                onClick={handleExportData}
+            >
+                Export
+            </button>}
+            {showAdminScreen && <button
+                className="btn ctl-btn import-btn"
+                title="Replace all board data from a JSON file"
+                onClick={() => importFileRef.current.click()}
+            >
+                Import
+            </button>}
+            <input
+                ref={importFileRef}
+                type="file"
+                accept="application/json,.json"
+                style={{ display: 'none' }}
+                onChange={handleImportFileChange}
+            />
             {
                 addChild && !showAdminForm &&
                 <button
