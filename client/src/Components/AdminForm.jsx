@@ -40,6 +40,26 @@ export default function AdminForm({
     //if current leaf exists, set as edit form, if not (when add node is hit), then make form blank
     const [node, setNode] = useState(isSelectLeaf.id ? isSelectLeaf : newNode)
 
+    // Children/Parents selection works by updating a node's relations by id,
+    // so a brand-new node (no id yet) has to be persisted first -- otherwise
+    // the selection screen tries to update a node with an undefined/NaN id.
+    async function selectRelations() {
+        try {
+            let target = node;
+            if (!target.id) {
+                target = await apiCalls.createNode(node);
+                setNode(target);
+                setData([...data, target]);
+            }
+            setIsSelectLeaf(target);
+            setShowAdminForm(false);
+            setShowAdminScreen(true);
+            setAddChild(true);
+        } catch (err) {
+            alert(`Failed to save node: ${err.message}`);
+        }
+    }
+
     return (
         <div className="admin-form">
             <form onSubmit={
@@ -103,12 +123,7 @@ export default function AdminForm({
                     <button
                         type="button"
                         className="btn btn--soft"
-                        onClick={() => {
-                            setIsSelectLeaf(node);
-                            setShowAdminForm(false);
-                            setShowAdminScreen(true);
-                            setAddChild(true)
-                        }}
+                        onClick={selectRelations}
                     >Children</button>
                     <div className="checkbox-field">
                         <input
@@ -126,12 +141,7 @@ export default function AdminForm({
                     <button
                         type="button"
                         className="btn btn--soft"
-                        onClick={() => {
-                            setIsSelectLeaf(node);
-                            setShowAdminForm(false);
-                            setShowAdminScreen(true);
-                            setAddChild(true)
-                        }}
+                        onClick={selectRelations}
                     >Parents</button>
                 </div>
                 <div className="node-options-container">
