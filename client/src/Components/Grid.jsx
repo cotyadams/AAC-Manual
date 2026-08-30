@@ -22,8 +22,8 @@ export default function Grid({
 }) {
   return (
     <div className="grid">
-      {data.map(node => (
-        <GridNode
+      {data.map(node => {
+        if (node.topLevel && oldData.length == 0) return (<GridNode
           node={node} key={node.id}
           setTTsContent={setTTsContent} ttsContent={ttsContent}
           isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
@@ -32,8 +32,10 @@ export default function Grid({
           addChild={addChild} setAddChild={setAddChild}
           data={data} setData={setData}
           oldData={oldData} setOldData={setOldData}
-        />
-      ))}
+        />)
+      }
+        
+      )}
     </div>
   );
 }
