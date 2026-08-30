@@ -12,9 +12,14 @@ export default function Grid({
   showAdminScreen,
   setShowAdminScreen,
   setIsSelectLeaf,
-  setShowAdminForm
+  setShowAdminForm,
+  addChild,
+  setAddChild,
+  data,
+  setData,
+  oldData,
+  setOldData
 }) {
-  const [data, setData] = fetchData();
   return (
     <div className="grid">
       {data.map(node => (
@@ -24,6 +29,9 @@ export default function Grid({
           isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
           showAdminScreen={showAdminScreen} setShowAdminScreen={setShowAdminScreen}
           setShowAdminForm={setShowAdminForm}
+          addChild={addChild} setAddChild={setAddChild}
+          data={data} setData={setData}
+          oldData={oldData} setOldData={setOldData}
         />
       ))}
     </div>

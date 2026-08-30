@@ -15,7 +15,15 @@ function App() {
   const [showPassForm, setShowPassForm] = useState(false)
   const [showAdminScreen, setShowAdminScreen] = useState(false)
   const [showAdminForm, setShowAdminForm] = useState(false)
+  // when editing a node, this is the node to edit
   const [isSelectLeaf, setIsSelectLeaf] = useState({})
+  // when adding child to existing node indicator
+  const [addChild, setAddChild] = useState(false)
+  const [data, setData] = fetchData();
+  const [oldData, setOldData] = useState([]);
+  // when creating a child item for a current node
+  // const [createChild, setCreateChild] = useState()
+  // bool to indicate topLevel
 
   console.log('table: ', {
     "showAdminScreen": showAdminScreen,
@@ -24,7 +32,6 @@ function App() {
     "isSelectLeaf": isSelectLeaf,
   })
 
-  const [data, setData] = fetchData();
 
   return (
     <div className="App">
@@ -38,16 +45,24 @@ function App() {
           showPassForm={showPassForm} setShowPassForm={setShowPassForm}
           showAdminScreen={showAdminScreen} setShowAdminScreen={setShowAdminScreen}
           showAdminForm={showAdminForm} setShowAdminForm={setShowAdminForm}
+          addChild={addChild} setAddChild={setAddChild}
+          data={data} setData={setData}
+          isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
+          oldData={oldData} setOldData={setOldData}
+
         />
 
-        {!showAdminForm && !showPassForm && <Grid
-          ttsContent={ttsContent} setTTsContent={setTTsContent}
-          data={data} setData={setData}
-          fetchData={fetchData}
-          setShowAdminScreen={setShowAdminScreen} showAdminScreen={showAdminScreen}
-          isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
-          setShowAdminForm={setShowAdminForm}
-        />
+        {!showAdminForm && !showPassForm &&
+          <Grid
+            ttsContent={ttsContent} setTTsContent={setTTsContent}
+            data={data} setData={setData}
+            oldData={oldData} setOldData={setOldData}
+            fetchData={fetchData}
+            setShowAdminScreen={setShowAdminScreen} showAdminScreen={showAdminScreen}
+            isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
+            setShowAdminForm={setShowAdminForm}
+            addChild={addChild} setAddChild={setAddChild}
+          />
         }
         {
           showPassForm &&
@@ -62,6 +77,9 @@ function App() {
             setShowAdminScreen={setShowAdminScreen}
             setShowAdminForm={setShowAdminForm}
             isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
+            addChild={addChild} setAddChild={setAddChild}
+            data={data} setData={setData}
+
           />
         }
       </div >

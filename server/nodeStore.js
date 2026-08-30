@@ -54,7 +54,7 @@ function createStore(dbPath = 'aac.db') {
 
   function getNode(id) {
     const row = db.prepare('SELECT * FROM nodes WHERE id = ?').get(id);
-    return rowToNode(row);
+    return rowToNode(row)
   }
 
   function getAllNodes() {

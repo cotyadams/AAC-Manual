@@ -1,6 +1,6 @@
 .App {
   font-family: 'Helvetica Neue', sans-serif;
-  height: 100%;
+  height: 100vh;
   display: flexbox;
   justify-content: center;
   align-items: center;

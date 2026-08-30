@@ -9,27 +9,37 @@ import fetchData from "../Functions/fetchData"
 //     icon: "🍎",
 //     description: "I want to eat",
 //     children: [],
-//     parents: []
+//     topLevel: bool,
 // }
 
-export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSelectLeaf, setIsSelectLeaf }) {
+export default function AdminForm({
+    setShowAdminForm,
+    setShowAdminScreen, 
+    isSelectLeaf, 
+    setIsSelectLeaf,
+    addChild,
+    setAddChild,
+    data,
+    setData
+}) {
     const newNode = {
         "label": "",
         "icon": "",
         "description": "",
         "children": [],
-        "parents": []
+        "topLevel:": true,
     }
+    //if current leaf exists, set as edit form, if not (when add node is hit), then make form blank
     const [node, setNode] = useState(isSelectLeaf.id ? () => {
-        setShowAdminForm(true)
         setShowAdminScreen(false)
+        setShowAdminForm(true)
         return isSelectLeaf
     } : newNode)
 
     return (
         <div className="admin-form">
             <form onSubmit={
-                node.id ?
+                isSelectLeaf.id ?
                     (e) => {
                         e.preventDefault();
                         console.log('true')
@@ -41,11 +51,10 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
                     :
                     (e) => {
                         e.preventDefault();
-                        console.log('false')
                         apiCalls.createNode(node)
                         setShowAdminForm(false)
                         setShowAdminScreen(true)
-
+                        setData([...data, node])
                     }
             }>
                 <input
@@ -72,13 +81,20 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
                         placeholder="children"
                         onClick={() => {
                             setIsSelectLeaf(node);
-                            setShowAdminForm(false)
+                            setShowAdminForm(false);
+                            setShowAdminScreen(true);
+                            setAddChild(true)
                         }}
                     >Children</button>
                     <button
-                        className="parents-selection"
-                        placeholder="parents"
-                        onChange={(e) => { setNode({ ...node, parents: e.target.value }) }}
+                        className="children-selection"
+                        placeholder="children"
+                        onClick={() => {
+                            setIsSelectLeaf(node);
+                            setShowAdminForm(false);
+                            setShowAdminScreen(true);
+                            setAddChild(true)
+                        }}
                     >Parents</button>
                 </div>
                 <div className="node-options-container">
@@ -94,10 +110,10 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
                             node.id ?
                                 () => {
                                     apiCalls.deleteNode(node.id)
-                                    setNode(newNode);
+                                    let newData = data.filter((node) => node.id != isSelectLeaf.id)
+                                    setData(newData)
                                     setShowAdminForm(false);
                                     setShowAdminScreen(true)
-
                                     setIsSelectLeaf({})
                                 }
                                 :
@@ -105,7 +121,6 @@ export default function AdminForm({ setShowAdminForm, setShowAdminScreen, isSele
                                     setNode(newNode)
                                     setShowAdminForm(false)
                                     setShowAdminScreen(true)
-
                                     setIsSelectLeaf({})
                                 }
                         }

@@ -1,5 +1,6 @@
 import '../styles/Controls.css'
 import speak from '../Functions/speak';
+import navUpLayer from '../Functions/NavUpLayer';
 
 function Controls({
     ttsContent,
@@ -9,13 +10,21 @@ function Controls({
     showAdminScreen,
     setShowAdminScreen,
     setShowAdminForm,
-    showAdminForm
+    showAdminForm,
+    addChild,
+    setAddChild,
+    data,
+    setData,
+    isSelectLeaf,
+    setIsSelectLeaf,
+    oldData,
+    setOldData
 }) {
     return (
         <div id="controls-container">
             <div className="controls-left">
                 <button
-                    onClick={() => console.log('click')}
+                    onClick={() => navUpLayer({ data, setData, oldData, setOldData })}
                     className="ctl-btn back-btn"
                     title="Go back to categories"
                 >
@@ -38,6 +47,21 @@ function Controls({
                 >
                     +
                 </button>}
+                {
+                    addChild &&
+                    <button
+                        className="ctl-btn add-to-children"
+                        onClick={() => {
+                            setIsSelectLeaf({})
+                            setShowAdminScreen(false)
+                            setAddChild(false)
+                        }
+                        }
+
+                    >
+                        <span>Add to Children</span>
+                    </button>
+                }
             </div>
             <div className="controls-right">
                 {true ? (
