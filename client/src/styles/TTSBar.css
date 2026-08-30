@@ -1,9 +1,9 @@
 .tts-bar {
   display: flex;
   width: 100%;
-  height: 10%;
-  flex-grow: 1;
-  padding: 0 16px;
+  min-width: 0;
+  flex-shrink: 0;
+  padding: 12px 16px;
   font-size: 3rem;
   font-family: inherit;
   color: var(--color-text);
@@ -12,6 +12,22 @@
   outline: none;
   text-align: center;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* On narrow phones, a 3rem input font eats too much vertical space
+   from the grid below it, so scale it down instead of letting it
+   claim a fixed share of the screen. */
+@media (max-width: 600px) {
+  .tts-bar {
+    padding: 10px 12px;
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .tts-bar {
+    font-size: 1.3rem;
+  }
 }
 
 .tts-bar::placeholder {
