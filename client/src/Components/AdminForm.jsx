@@ -222,27 +222,42 @@ export default function AdminForm({
                             node.id ?
                                 async () => {
                                     try {
-                                        let updatedParent = null;
-                                        if (!showAllNodes && currentParentId) {
-                                            // tree mode with a parent above it: just unlink from that parent
-                                            updatedParent = await apiCalls.updateNode(currentParentId, { removeChildren: [node.id] })
-                                        } else {
-                                            // view-all mode (or no parent context): delete the node entirely,
-                                            // which cascades and removes it from every parent's children in the database
+                                        let deleted, updatedNode;
+                                        if (showAllNodes) {
+                                            // show-all screen: delete the node entirely, which cascades
+                                            // and removes it from every parent (and Home) in the database
                                             await apiCalls.deleteNode(node.id)
+                                            deleted = true
+                                            updatedNode = null
+                                        } else if (currentParentId) {
+                                            // tree mode with a parent above it: unlink just that one
+                                            // occurrence -- the node only goes away entirely if it has
+                                            // no other parents left and isn't shown on Home
+                                            ({ deleted, node: updatedNode } = await apiCalls.removeNodeOccurrence(node.id, { parentId: currentParentId }))
+                                        } else {
+                                            // home level: remove just its "show on Home" placement
+                                            ({ deleted, node: updatedNode } = await apiCalls.removeNodeOccurrence(node.id, { fromTopLevel: true }))
                                         }
 
-                                        // the deleted node's id (and, if we just unlinked it,
-                                        // the parent's fresh children list) is now stale wherever
-                                        // it's cached -- patch every level so nothing needs a refresh
-                                        const stripDeleted = (n) =>
-                                            updatedParent && n.id === updatedParent.id
-                                                ? updatedParent
-                                                : n.children && n.children.includes(node.id)
-                                                    ? { ...n, children: n.children.filter((id) => id !== node.id) }
-                                                    : n
-                                        const newData = data.filter((n) => n.id !== node.id).map(stripDeleted)
-                                        const newOldData = oldData.map((level) => level.filter((n) => n.id !== node.id).map(stripDeleted))
+                                        // if this was its last occurrence, it's gone from the database
+                                        // entirely -- strip it (and any now-dangling child references to
+                                        // it) out of every cached level. Otherwise it still exists under
+                                        // its other parents/Home, so just refresh its own fields and drop
+                                        // it from the one parent's children list we actually unlinked it from
+                                        const stripChildRef = (n) =>
+                                            n.children && n.children.includes(node.id)
+                                                ? { ...n, children: n.children.filter((id) => id !== node.id) }
+                                                : n
+                                        const patch = deleted
+                                            ? (n) => (n.id === node.id ? null : stripChildRef(n))
+                                            : (n) => {
+                                                if (n.id === node.id) return updatedNode
+                                                if (currentParentId && n.id === currentParentId) return stripChildRef(n)
+                                                return n
+                                            }
+                                        const applyPatch = (level) => level.map(patch).filter(Boolean)
+                                        const newData = applyPatch(data)
+                                        const newOldData = oldData.map(applyPatch)
 
                                         setShowAdminForm(false);
                                         setIsSelectLeaf({})

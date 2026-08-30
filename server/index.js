@@ -53,7 +53,25 @@ app.put('/api/nodes/:id', (req, res) => {
   }
 });
 
-// DELETE a node
+// DELETE a single occurrence of a node -- unlink it from one parent, or
+// clear its "show on Home" placement -- rather than deleting it outright.
+// Only actually deletes the node if that was its last remaining reference.
+// query: ?parentId=<id>  and/or  ?fromTopLevel=true
+app.delete('/api/nodes/:id/occurrence', (req, res) => {
+  try {
+    const { parentId, fromTopLevel } = req.query;
+    const result = store.removeNodeOccurrence(Number(req.params.id), {
+      parentId: parentId !== undefined ? Number(parentId) : null,
+      fromTopLevel: fromTopLevel === 'true',
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE a node entirely -- removes it and every link to/from it,
+// regardless of how many parents (or Home) it currently appears under.
 app.delete('/api/nodes/:id', (req, res) => {
   store.deleteNode(Number(req.params.id));
   res.status(204).send();

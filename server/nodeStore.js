@@ -218,6 +218,41 @@ function createStore(dbPath = 'aac.db') {
     db.prepare('DELETE FROM nodes WHERE id = ?').run(id);
   }
 
+  /**
+   * Remove a single occurrence of a node -- either its link under one
+   * specific parent, or its "show on Home" (topLevel) placement -- without
+   * touching its other parents or its own children. A node like "Apple"
+   * that lives under both "Food" and "Colors" should only disappear from
+   * the one it was removed from.
+   *
+   * Once that occurrence is gone, if the node has no parents left and is
+   * no longer topLevel, it has no remaining occurrences anywhere, so it's
+   * deleted outright (which cascades its own child links too -- there's
+   * nothing left pointing at it, so nothing left to preserve).
+   *
+   * @param {number} id
+   * @param {Object} [context]
+   * @param {number} [context.parentId] - parent to unlink this node from
+   * @param {boolean} [context.fromTopLevel] - clear the topLevel flag
+   * @returns {{ deleted: boolean, node: Object|null }}
+   */
+  const removeNodeOccurrence = db.transaction((id, { parentId = null, fromTopLevel = false } = {}) => {
+    const existing = db.prepare('SELECT * FROM nodes WHERE id = ?').get(id);
+    if (!existing) throw new Error(`No node with id ${id}`);
+
+    if (parentId !== null) removeChild(parentId, id);
+    if (fromTopLevel) {
+      db.prepare('UPDATE nodes SET topLevel = 0 WHERE id = ?').run(id);
+    }
+
+    const updated = getNode(id);
+    if (updated.parents.length === 0 && !updated.topLevel) {
+      deleteNode(id);
+      return { deleted: true, node: null };
+    }
+    return { deleted: false, node: updated };
+  });
+
   return {
     db, // exposed in case you need raw access / to call db.close()
     getNode,
@@ -225,6 +260,7 @@ function createStore(dbPath = 'aac.db') {
     addNode,
     editNode,
     deleteNode,
+    removeNodeOccurrence,
     addChild,
     removeChild,
     addParent,

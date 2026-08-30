@@ -36,3 +36,19 @@ export async function deleteNode(id) {
   const res = await fetch(`${BASE_URL}/nodes/${id}`, { method: 'DELETE' });
   if (!res.ok) throw new Error('Failed to delete node');
 }
+
+// Removes just one occurrence of a node -- either its link under a single
+// parent (pass parentId) or its "show on Home" placement (pass
+// fromTopLevel: true). Only actually deletes the node if that was its
+// last remaining reference; returns { deleted, node } either way.
+export async function removeNodeOccurrence(id, { parentId, fromTopLevel } = {}) {
+  const params = new URLSearchParams();
+  if (parentId !== undefined && parentId !== null) params.set('parentId', parentId);
+  if (fromTopLevel) params.set('fromTopLevel', 'true');
+
+  const res = await fetch(`${BASE_URL}/nodes/${id}/occurrence?${params.toString()}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error((await res.json()).error || 'Failed to remove node');
+  return res.json();
+}
