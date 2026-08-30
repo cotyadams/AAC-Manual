@@ -14,7 +14,10 @@ fs.mkdirSync(path.dirname(dbPath) || '.', { recursive: true });
 const store = createStore(dbPath);
 
 app.use(cors());        // allows the React dev server (different port) to call this API
-app.use(express.json());
+// higher than express's 100kb default -- uploaded icons are stored as
+// base64 data URLs on the node itself, so a single request body can be
+// a few hundred KB even after the client-side thumbnail downscaling
+app.use(express.json({ limit: '5mb' }));
 
 // GET all nodes
 app.get('/api/nodes', (req, res) => {

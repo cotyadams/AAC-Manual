@@ -3,6 +3,8 @@ import * as apiCalls from "../Nodeapi"
 import "../styles/admin.css"
 import fetchData from "../Functions/fetchData"
 import navUpLayer from "../Functions/NavUpLayer"
+import isImageIcon from "../Functions/isImageIcon"
+import resizeImageToDataUrl from "../Functions/resizeImageToDataUrl"
 
 
 // {
@@ -43,6 +45,20 @@ export default function AdminForm({
     }
     //if current leaf exists, set as edit form, if not (when add node is hit), then make form blank
     const [node, setNode] = useState(isSelectLeaf.id ? isSelectLeaf : newNode)
+    const [iconError, setIconError] = useState("")
+
+    async function handleIconFile(e) {
+        const file = e.target.files[0]
+        e.target.value = "" // allow re-selecting the same file later
+        if (!file) return
+        try {
+            setIconError("")
+            const dataUrl = await resizeImageToDataUrl(file)
+            setNode((prev) => ({ ...prev, icon: dataUrl }))
+        } catch (err) {
+            setIconError(err.message || "Failed to load image")
+        }
+    }
 
     // Children/Parents selection works by updating a node's relations by id,
     // so a brand-new node (no id yet) has to be persisted first -- otherwise
@@ -57,21 +73,6 @@ export default function AdminForm({
             }
             setIsSelectLeaf(target);
             setShowAdminForm(false);
-
-            // In tree view, the picker would otherwise open wherever the grid
-            // was last left sitting. Jump straight into the array being built
-            // instead -- the target's own children when adding a child, its
-            // own parents when adding a parent -- so the user lands with that
-            // context already in view.
-            if (!showAllNodes) {
-                const idsToShow = mode === "parent" ? target.parents : target.children;
-                const newData = await Promise.all(idsToShow.map((id) => apiCalls.fetchNode(id)));
-                setOldData([...oldData, data]);
-                setOldParentIds([...oldParentIds, currentParentId]);
-                setCurrentParentId(target.id);
-                setData(newData);
-            }
-
             setShowAdminScreen(true);
             if (mode === "parent") {
                 setAddParent(true);
@@ -140,13 +141,37 @@ export default function AdminForm({
                 </div>
                 <div className="form-field">
                     <label htmlFor="icon-input">Icon</label>
+                    {isImageIcon(node.icon) ? (
+                        <div className="icon-preview-row">
+                            <img className="icon-preview-img" src={node.icon} alt="Selected icon preview" />
+                            <button
+                                type="button"
+                                className="btn btn--soft"
+                                onClick={() => setNode({ ...node, icon: "" })}
+                            >
+                                Remove image
+                            </button>
+                        </div>
+                    ) : (
+                        <input
+                            id="icon-input"
+                            className="text-input icon-input"
+                            value={node.icon}
+                            placeholder="e.g. 🍎"
+                            onChange={(e) => { setNode({ ...node, icon: e.target.value }) }}
+                        />
+                    )}
+                    <label htmlFor="icon-upload-input" className="icon-upload-label">
+                        {isImageIcon(node.icon) ? "Replace with a different photo" : "Or upload a photo from your device"}
+                    </label>
                     <input
-                        id="icon-input"
-                        className="text-input icon-input"
-                        value={node.icon}
-                        placeholder="e.g. 🍎"
-                        onChange={(e) => { setNode({ ...node, icon: e.target.value }) }}
+                        id="icon-upload-input"
+                        type="file"
+                        accept="image/*"
+                        className="icon-upload-input"
+                        onChange={handleIconFile}
                     />
+                    {iconError && <p className="icon-upload-error">{iconError}</p>}
                 </div>
                 <div className="form-field">
                     <label htmlFor="description-input">Description</label>

@@ -4,6 +4,7 @@ import speak from '../Functions/speak'
 import fetchData from "../Functions/fetchData";
 import * as apiCalls from '../Nodeapi'
 import AdminForm from "./AdminForm";
+import isImageIcon from "../Functions/isImageIcon";
 
 export default function GridNode({
   node,
@@ -60,7 +61,13 @@ export default function GridNode({
         })
       }}
     >
-      <span className="grid-node-icon" aria-hidden="true">{node.icon}</span>
+      <span className="grid-node-icon-wrap" aria-hidden="true">
+        {isImageIcon(node.icon) ? (
+          <img className="grid-node-icon-img" src={node.icon} alt="" />
+        ) : (
+          <span className="grid-node-icon">{node.icon}</span>
+        )}
+      </span>
       <span className="grid-node-label">{node.label}</span>
     </button>
   );

@@ -72,17 +72,41 @@
   background: var(--color-panel);
 }
 
+/* Fills every bit of vertical space the label isn't using (flex: 1 against
+   the label's flex: 0 0 auto below), so the icon -- image or emoji -- is
+   always exactly as large as the node allows, never fixed/guessed. */
+.grid-node-icon-wrap {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.grid-node-icon-img {
+  max-width: 100%;
+  max-height: 100%;
+  /* keeps aspect ratio and can never exceed its wrapper, so an uploaded
+     photo of any shape fills the available space without cropping or
+     spilling past the button's edges */
+  object-fit: contain;
+  display: block;
+}
+
 .grid-node-icon {
-  /* cqmin (not cqw) so a short/narrow container still bounds the icon in
+  /* cqmin (not cqw) so a short/narrow container still bounds the emoji in
      both dimensions -- sizing off width alone could overflow a squat node */
-  font-size: clamp(1.75rem, 46cqmin, 5rem);
+  font-size: clamp(1.75rem, 60cqmin, 6rem);
   line-height: 1;
-  margin: 2px;
 }
 
 .grid-node-label {
+  flex: 0 0 auto;
   font-size: clamp(0.8rem, 15cqmin, 1.75rem);
   line-height: 1.15;
-  margin: 2px;
+  margin-top: 4px;
   text-align: center;
 }

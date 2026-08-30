@@ -64,6 +64,60 @@
   text-align: center;
 }
 
+.icon-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-preview-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-bg);
+}
+
+.icon-upload-label {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-accent);
+  cursor: pointer;
+  width: fit-content;
+}
+
+.icon-upload-label:hover {
+  text-decoration: underline;
+}
+
+.icon-upload-input {
+  /* visually hidden but still reachable via the label above (htmlFor)
+     and via keyboard focus, unlike display:none */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.icon-upload-label:has(+ .icon-upload-input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.icon-upload-error {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-danger);
+}
+
 /* Children / Show on Home? / Parents row */
 .selection-container {
   display: flex;
