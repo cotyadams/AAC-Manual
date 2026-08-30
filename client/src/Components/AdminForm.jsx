@@ -57,6 +57,21 @@ export default function AdminForm({
             }
             setIsSelectLeaf(target);
             setShowAdminForm(false);
+
+            // In tree view, the picker would otherwise open wherever the grid
+            // was last left sitting. Jump straight into the array being built
+            // instead -- the target's own children when adding a child, its
+            // own parents when adding a parent -- so the user lands with that
+            // context already in view.
+            if (!showAllNodes) {
+                const idsToShow = mode === "parent" ? target.parents : target.children;
+                const newData = await Promise.all(idsToShow.map((id) => apiCalls.fetchNode(id)));
+                setOldData([...oldData, data]);
+                setOldParentIds([...oldParentIds, currentParentId]);
+                setCurrentParentId(target.id);
+                setData(newData);
+            }
+
             setShowAdminScreen(true);
             if (mode === "parent") {
                 setAddParent(true);
