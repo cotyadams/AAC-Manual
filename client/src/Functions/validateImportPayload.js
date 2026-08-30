@@ -19,8 +19,8 @@ export default function validateImportPayload(parsed) {
         if (node.id === undefined || node.id === null) {
             return 'Every node needs an "id".';
         }
-        if (typeof node.label !== 'string' || !node.label.trim()) {
-            return `Node ${node.id} is missing a non-empty "label".`;
+        if (typeof node.label !== 'string') {
+            return `Node ${node.id}'s "label" must be a string.`;
         }
         if (node.children !== undefined && !Array.isArray(node.children)) {
             return `Node ${node.id}'s "children" must be an array.`;
