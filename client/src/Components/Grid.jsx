@@ -25,7 +25,9 @@ export default function Grid({
   currentParentId,
   setCurrentParentId,
   oldParentIds,
-  setOldParentIds
+  setOldParentIds,
+  searchActive,
+  enabledNodeIds
 }) {
   const [allNodes, setAllNodes] = useState([]);
 
@@ -60,6 +62,7 @@ export default function Grid({
           oldData={oldData} setOldData={setOldData}
           currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
           oldParentIds={oldParentIds} setOldParentIds={setOldParentIds}
+          disabled={searchActive && !!enabledNodeIds && !enabledNodeIds.has(node.id)}
         />
       ))}
     </div>

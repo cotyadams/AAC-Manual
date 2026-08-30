@@ -7,7 +7,9 @@ import * as apiCalls from "./Nodeapi.js"
 import AuthenticationForm from './Components/AuthenticationForm.jsx';
 import AdminForm from './Components/AdminForm.jsx';
 import AdminScreen from './Components/AdminScreen.jsx'
+import SearchNoResultsPopup from './Components/SearchNoResultsPopup.jsx';
 import fetchData from './Functions/fetchData.js';
+import { findMatchingNodeIds, computeAllowedNodeIds } from './Functions/searchNodes.js';
 
 
 function App() {
@@ -32,9 +34,36 @@ function App() {
   // id of the node whose children are currently being displayed in tree mode (null at home/root)
   const [currentParentId, setCurrentParentId] = useState(null);
   const [oldParentIds, setOldParentIds] = useState([]);
+  // whether a TTS-bar search is currently filtering the grid
+  const [searchActive, setSearchActive] = useState(false)
+  // ids of nodes that are matches or lie on a path to one, while search is active
+  const [enabledNodeIds, setEnabledNodeIds] = useState(null)
+  const [showNoResultsPopup, setShowNoResultsPopup] = useState(false)
   // when creating a child item for a current node
   // const [createChild, setCreateChild] = useState()
   // bool to indicate topLevel
+
+  async function handleToggleSearch() {
+    if (searchActive) {
+      setSearchActive(false)
+      setEnabledNodeIds(null)
+      return
+    }
+
+    const query = ttsContent.trim()
+    if (!query) return
+
+    const allNodes = await apiCalls.fetchAllNodes()
+    const matchIds = findMatchingNodeIds(allNodes, query)
+
+    if (matchIds.length === 0) {
+      setShowNoResultsPopup(true)
+      return
+    }
+
+    setEnabledNodeIds(computeAllowedNodeIds(allNodes, matchIds))
+    setSearchActive(true)
+  }
 
   console.log('table: ', {
     "showAdminScreen": showAdminScreen,
@@ -65,6 +94,7 @@ function App() {
           showAllNodes={showAllNodes} setShowAllNodes={setShowAllNodes}
           currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
           oldParentIds={oldParentIds} setOldParentIds={setOldParentIds}
+          searchActive={searchActive} onToggleSearch={handleToggleSearch}
 
         />
 
@@ -82,8 +112,13 @@ function App() {
             showAllNodes={showAllNodes}
             currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
             oldParentIds={oldParentIds} setOldParentIds={setOldParentIds}
+            searchActive={searchActive} enabledNodeIds={enabledNodeIds}
           />
         }
+        <SearchNoResultsPopup
+          show={showNoResultsPopup}
+          onClose={() => setShowNoResultsPopup(false)}
+        />
         {
           showPassForm &&
           <AuthenticationForm

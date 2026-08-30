@@ -49,6 +49,17 @@
   outline-offset: -3px;
 }
 
+/* Search filters the grid by disabling (not hiding) nodes that don't lead
+   to a match, so the layout stays stable while browsing results. */
+.grid-node:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.grid-node:disabled:hover {
+  background: var(--color-panel);
+}
+
 .grid-node-icon {
   font-size: clamp(1.5rem, 32cqw, 3.75rem);
   line-height: 1;

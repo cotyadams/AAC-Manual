@@ -28,7 +28,9 @@ function Controls({
     currentParentId,
     setCurrentParentId,
     oldParentIds,
-    setOldParentIds
+    setOldParentIds,
+    searchActive,
+    onToggleSearch
 }) {
     return (
         // All buttons are direct flex children of one wrapping row (rather than
@@ -58,11 +60,11 @@ function Controls({
                 ←
             </button>
             <button
-                onClick={() => console.log('click')}
-                className="btn ctl-btn search-btn"
-                title="Search symbols and categories"
+                onClick={onToggleSearch}
+                className={`btn ctl-btn search-btn${searchActive ? ' search-btn-active' : ''}`}
+                title={searchActive ? "Stop search" : "Search symbols and categories"}
             >
-                🔍
+                {searchActive ? '⏹' : '🔍'}
             </button>
             {showAdminScreen && <button
                 className="btn ctl-btn add-btn"

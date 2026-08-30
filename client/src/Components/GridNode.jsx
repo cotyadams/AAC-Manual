@@ -25,35 +25,41 @@ export default function GridNode({
   currentParentId,
   setCurrentParentId,
   oldParentIds,
-  setOldParentIds
+  setOldParentIds,
+  disabled
 }) {
   return (
-    <button className="grid-node" aria-label={node.label} onClick={(event) => {
-      console.log("on click: ", oldData)
-      onSelect({
-        event,
-        node,
-        ttsContent,
-        setTTsContent,
-        isSelectLeaf,
-        setIsSelectLeaf,
-        showAdminScreen,
-        setShowAdminScreen,
-        setShowAdminForm,
-        addChild,
-        setAddChild,
-        addParent,
-        setAddParent,
-        data,
-        setData,
-        oldData,
-        setOldData,
-        currentParentId,
-        setCurrentParentId,
-        oldParentIds,
-        setOldParentIds
-      })
-    }}>
+    <button
+      className="grid-node"
+      aria-label={node.label}
+      disabled={disabled}
+      onClick={(event) => {
+        console.log("on click: ", oldData)
+        onSelect({
+          event,
+          node,
+          ttsContent,
+          setTTsContent,
+          isSelectLeaf,
+          setIsSelectLeaf,
+          showAdminScreen,
+          setShowAdminScreen,
+          setShowAdminForm,
+          addChild,
+          setAddChild,
+          addParent,
+          setAddParent,
+          data,
+          setData,
+          oldData,
+          setOldData,
+          currentParentId,
+          setCurrentParentId,
+          oldParentIds,
+          setOldParentIds
+        })
+      }}
+    >
       <span className="grid-node-icon" aria-hidden="true">{node.icon}</span>
       <span className="grid-node-label">{node.label}</span>
     </button>

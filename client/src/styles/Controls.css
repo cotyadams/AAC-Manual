@@ -3,7 +3,7 @@
    The admin button carries `margin-left: auto` below, which pins it
    (and speak/clear after it) to the right edge on a single row, and
    pulls the same group to the right edge of the bottom row if the bar
-   wraps — so add-to-children/add-to-parents land on that bottom row
+   wraps â€” so add-to-children/add-to-parents land on that bottom row
    with admin/speak/clear instead of getting a row of their own. */
 #controls-container {
   display: flex;
@@ -76,6 +76,17 @@
 .admin-enter-btn:hover,
 .admin-exit-btn:hover {
   background-color: var(--color-neutral-hover);
+}
+
+/* While a search is active, the search button turns into a "stop search"
+   button -- same size/position, just recolored to the app's danger color
+   (same association as the clear-btn "X") so it reads as a cancel action. */
+.search-btn.search-btn-active {
+  background-color: var(--color-danger);
+}
+
+.search-btn.search-btn-active:hover {
+  background-color: var(--color-danger-hover);
 }
 
 /* These carry a text label instead of a single icon, so they need
