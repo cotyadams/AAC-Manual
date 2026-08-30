@@ -26,7 +26,17 @@ function Controls({
         <div id="controls-container">
             <div className="controls-left">
                 <button
-                    onClick={() => navUpLayer({ data, setData, oldData, setOldData })}
+                    style={showAdminScreen && oldData.length == 0 ? { backgroundColor: "lightgray" } : {}}
+                    onClick={
+                        () => {
+                            if (showAdminForm) {
+                                setShowAdminForm(false);
+                                setShowAdminScreen(true);
+                            } else if (showPassForm) {
+                                setShowPassForm(false)
+                            }
+                            else { navUpLayer({ data, setData, oldData, setOldData }) }
+                        }}
                     className="btn ctl-btn back-btn"
                     title="Go back to categories"
                 >
@@ -54,7 +64,7 @@ function Controls({
                     title={showAllNodes ? "Show normal tree structure" : "Show all nodes"}
                     onClick={() => setShowAllNodes(!showAllNodes)}
                 >
-                    {showAllNodes ? "🌳" : "🗂️"}
+                    {showAllNodes ? "ShowTree" : "Show All"}
                 </button>}
                 {
                     addChild &&

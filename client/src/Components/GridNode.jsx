@@ -116,7 +116,7 @@ async function onSelect({
     setData([...newData])
   }
 
-  await setTTsContent(ttsContent + node.description)
+  await setTTsContent(ttsContent + node.description + ' ')
   speak(node.description);
 }
 

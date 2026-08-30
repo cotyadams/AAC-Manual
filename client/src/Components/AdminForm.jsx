@@ -106,9 +106,10 @@ export default function AdminForm({
                         <input
                             type="checkbox"
                             id="top-level-checkbox"
+                            checked={!!node.topLevel}
                             onChange={
                                 () => {
-                                    setNode({...node, node: !node.topLevel})
+                                    setNode({...node, topLevel: !node.topLevel})
                                 }
                             }
                         />
