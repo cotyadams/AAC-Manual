@@ -249,7 +249,9 @@ export default function AdminForm({
                                                 ? { ...n, children: n.children.filter((id) => id !== node.id) }
                                                 : n
                                         const patch = deleted
-                                            ? (n) => (n.id === node.id ? null : stripChildRef(n))
+                                            ? (n) => {
+                                                return n.id === node.id ? null : stripChildRef(n)
+                                            }
                                             : (n) => {
                                                 if (n.id === node.id) return updatedNode
                                                 if (currentParentId && n.id === currentParentId) return stripChildRef(n)
