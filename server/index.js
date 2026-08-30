@@ -24,6 +24,25 @@ app.get('/api/nodes', (req, res) => {
   res.json(store.getAllNodes());
 });
 
+// GET a full dump of the board -- save this file and hand it to someone
+// else so they can load your data into their own copy of the app via
+// POST /api/import.
+app.get('/api/export', (req, res) => {
+  res.setHeader('Content-Disposition', 'attachment; filename="aac-export.json"');
+  res.json(store.exportAll());
+});
+
+// REPLACE all nodes and relationships with a previously exported dump.
+// body: the JSON produced by GET /api/export (or just its `nodes` array)
+app.post('/api/import', (req, res) => {
+  try {
+    const nodes = store.importAll(req.body);
+    res.json({ imported: nodes.length, nodes });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // GET one node
 app.get('/api/nodes/:id', (req, res) => {
   const node = store.getNode(Number(req.params.id));

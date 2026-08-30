@@ -73,6 +73,56 @@ function createStore(dbPath = 'aac.db') {
     return rows.map(rowToNode);
   }
 
+  // ---------- export / import ----------
+
+  /**
+   * Dump the entire board as plain JSON, suitable for handing to someone
+   * else so they can load the same data into their own database via
+   * importAll().
+   */
+  function exportAll() {
+    return { exportedAt: new Date().toISOString(), nodes: getAllNodes() };
+  }
+
+  /**
+   * Replace everything currently in the database with the nodes from a
+   * previous exportAll() dump. Node ids and relationships are restored
+   * exactly as exported.
+   *
+   * @param {Object|Array} data - the object returned by exportAll(), or
+   *   just the `nodes` array itself.
+   * @returns {Object[]} the imported nodes
+   */
+  const importAll = db.transaction((data) => {
+    const nodes = Array.isArray(data) ? data : data.nodes;
+    if (!Array.isArray(nodes)) throw new Error('Expected an array of nodes (or { nodes: [...] }).');
+
+    db.exec('DELETE FROM node_relationships');
+    db.exec('DELETE FROM nodes');
+
+    const insertNode = db.prepare(
+      'INSERT INTO nodes (id, label, icon, description, topLevel) VALUES (@id, @label, @icon, @description, @topLevel)'
+    );
+    for (const n of nodes) {
+      insertNode.run({
+        id: n.id,
+        label: n.label,
+        icon: n.icon ?? null,
+        description: n.description ?? null,
+        topLevel: n.topLevel ? 1 : 0,
+      });
+    }
+
+    const insertRel = db.prepare(
+      'INSERT OR IGNORE INTO node_relationships (parent_id, child_id) VALUES (?, ?)'
+    );
+    for (const n of nodes) {
+      for (const childId of n.children || []) insertRel.run(n.id, childId);
+    }
+
+    return getAllNodes();
+  });
+
   // ---------- relationship helpers ----------
 
   function linkExists(parentId, childId) {
@@ -257,6 +307,8 @@ function createStore(dbPath = 'aac.db') {
     db, // exposed in case you need raw access / to call db.close()
     getNode,
     getAllNodes,
+    exportAll,
+    importAll,
     addNode,
     editNode,
     deleteNode,
