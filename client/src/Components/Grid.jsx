@@ -23,7 +23,10 @@ export default function Grid({
   return (
     <div className="grid">
       {data.map(node => {
-        if (node.topLevel && oldData.length == 0) return (<GridNode
+        // At the top layer (no drill-down history yet), only show nodes
+        // flagged topLevel. Once drilled into a node's children, show
+        // everything in that child set regardless of topLevel.
+        if (oldData.length > 0 || node.topLevel) return (<GridNode
           node={node} key={node.id}
           setTTsContent={setTTsContent} ttsContent={ttsContent}
           isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}

@@ -52,12 +52,21 @@ function App() {
 
         />
 
-        {!showAdminForm && !showPassForm &&
+        {!showAdminForm && !showPassForm && !showAdminScreen &&
           <Grid
             ttsContent={ttsContent} setTTsContent={setTTsContent}
             data={data} setData={setData}
             oldData={oldData} setOldData={setOldData}
             fetchData={fetchData}
+            setShowAdminScreen={setShowAdminScreen} showAdminScreen={showAdminScreen}
+            isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
+            setShowAdminForm={setShowAdminForm}
+            addChild={addChild} setAddChild={setAddChild}
+          />
+        }
+        {!showAdminForm && !showPassForm && showAdminScreen &&
+          <AdminScreen
+            ttsContent={ttsContent} setTTsContent={setTTsContent}
             setShowAdminScreen={setShowAdminScreen} showAdminScreen={showAdminScreen}
             isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
             setShowAdminForm={setShowAdminForm}
