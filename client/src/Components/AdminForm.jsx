@@ -20,6 +20,8 @@ export default function AdminForm({
     setIsSelectLeaf,
     addChild,
     setAddChild,
+    addParent,
+    setAddParent,
     data,
     setData,
     showAllNodes,
@@ -43,7 +45,7 @@ export default function AdminForm({
     // Children/Parents selection works by updating a node's relations by id,
     // so a brand-new node (no id yet) has to be persisted first -- otherwise
     // the selection screen tries to update a node with an undefined/NaN id.
-    async function selectRelations() {
+    async function selectRelations(mode) {
         try {
             let target = node;
             if (!target.id) {
@@ -54,7 +56,11 @@ export default function AdminForm({
             setIsSelectLeaf(target);
             setShowAdminForm(false);
             setShowAdminScreen(true);
-            setAddChild(true);
+            if (mode === "parent") {
+                setAddParent(true);
+            } else {
+                setAddChild(true);
+            }
         } catch (err) {
             alert(`Failed to save node: ${err.message}`);
         }
@@ -123,7 +129,7 @@ export default function AdminForm({
                     <button
                         type="button"
                         className="btn btn--soft"
-                        onClick={selectRelations}
+                        onClick={() => selectRelations("child")}
                     >Children</button>
                     <div className="checkbox-field">
                         <input
@@ -141,7 +147,7 @@ export default function AdminForm({
                     <button
                         type="button"
                         className="btn btn--soft"
-                        onClick={selectRelations}
+                        onClick={() => selectRelations("parent")}
                     >Parents</button>
                 </div>
                 <div className="node-options-container">

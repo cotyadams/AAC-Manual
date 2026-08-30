@@ -15,6 +15,8 @@ export default function Grid({
   setShowAdminForm,
   addChild,
   setAddChild,
+  addParent,
+  setAddParent,
   data,
   setData,
   oldData,
@@ -53,6 +55,7 @@ export default function Grid({
           showAdminScreen={showAdminScreen} setShowAdminScreen={setShowAdminScreen}
           setShowAdminForm={setShowAdminForm}
           addChild={addChild} setAddChild={setAddChild}
+          addParent={addParent} setAddParent={setAddParent}
           data={data} setData={setData}
           oldData={oldData} setOldData={setOldData}
           currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}

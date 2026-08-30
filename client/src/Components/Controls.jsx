@@ -13,6 +13,8 @@ function Controls({
     showAdminForm,
     addChild,
     setAddChild,
+    addParent,
+    setAddParent,
     data,
     setData,
     isSelectLeaf,
@@ -85,6 +87,21 @@ function Controls({
                         <span>Add to Children</span>
                     </button>
                 }
+                {
+                    addParent &&
+                    <button
+                        className="btn ctl-btn add-to-parents"
+                        onClick={() => {
+                            setIsSelectLeaf({})
+                            setShowAdminScreen(false)
+                            setAddParent(false)
+                        }
+                        }
+
+                    >
+                        <span>Add to Parents</span>
+                    </button>
+                }
             </div>
             <div className="controls-right">
                 {true ? (
@@ -97,6 +114,7 @@ function Controls({
                                 setShowPassForm(false)
                                 setShowAdminForm(false)
                                 setAddChild(false)
+                                setAddParent(false)
                             }
                         }}
                         className="btn ctl-btn admin-exit-btn"

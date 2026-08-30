@@ -16,6 +16,8 @@ export default function GridNode({
   setShowAdminScreen,
   addChild,
   setAddChild,
+  addParent,
+  setAddParent,
   data,
   setData,
   oldData,
@@ -40,6 +42,8 @@ export default function GridNode({
         setShowAdminForm,
         addChild,
         setAddChild,
+        addParent,
+        setAddParent,
         data,
         setData,
         oldData,
@@ -70,6 +74,8 @@ async function onSelect({
   setShowAdminForm,
   addChild,
   setAddChild,
+  addParent,
+  setAddParent,
   data,
   setData,
   oldData,
@@ -107,6 +113,33 @@ async function onSelect({
       }
     } catch (err) {
       alert(`Failed to add child: ${err.message}`);
+    }
+
+    return
+  }
+
+  else if (addParent) {
+    console.log('Child (node being edited): ', isSelectLeaf)
+    console.log('Parent: ', node)
+
+    // the reverse of addChild: the node being edited (isSelectLeaf) gets
+    // appended to the *clicked* node's children, so the clicked node
+    // becomes a parent of the node being edited
+    const newNode = {
+      addChildren: [isSelectLeaf.id]
+    }
+
+    try {
+      const updatedParent = await apiCalls.updateNode(node.id, newNode);
+
+      // the clicked node's cached children list is now stale wherever
+      // it's sitting (current level and every level on the back stack) --
+      // patch it in place so it reflects the new relationship without a refresh
+      const patchParent = (n) => (n.id === updatedParent.id ? updatedParent : n);
+      setData(data.map(patchParent));
+      setOldData(oldData.map((level) => level.map(patchParent)));
+    } catch (err) {
+      alert(`Failed to add parent: ${err.message}`);
     }
 
     return

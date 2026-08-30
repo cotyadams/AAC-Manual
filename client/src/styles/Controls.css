@@ -52,6 +52,7 @@
 .search-btn,
 .add-btn,
 .add-to-children,
+.add-to-parents,
 .admin-enter-btn,
 .admin-exit-btn {
   background-color: var(--color-neutral);
@@ -61,14 +62,16 @@
 .search-btn:hover,
 .add-btn:hover,
 .add-to-children:hover,
+.add-to-parents:hover,
 .admin-enter-btn:hover,
 .admin-exit-btn:hover {
   background-color: var(--color-neutral-hover);
 }
 
-/* This one carries a text label instead of a single icon, so it needs
+/* These carry a text label instead of a single icon, so they need
    room to grow past the fixed 80px icon-button width. */
-.add-to-children {
+.add-to-children,
+.add-to-parents {
   width: auto;
   min-width: 80px;
   padding: 0 16px;

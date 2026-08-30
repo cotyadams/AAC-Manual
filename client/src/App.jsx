@@ -21,6 +21,8 @@ function App() {
   const [isSelectLeaf, setIsSelectLeaf] = useState({})
   // when adding child to existing node indicator
   const [addChild, setAddChild] = useState(false)
+  // when adding the node being edited as a child of an existing node (i.e. picking a parent) indicator
+  const [addParent, setAddParent] = useState(false)
   const [data, setData] = fetchData();
   const [oldData, setOldData] = useState([]);
   // id of the node whose children are currently being displayed in tree mode (null at home/root)
@@ -51,6 +53,7 @@ function App() {
           showAdminScreen={showAdminScreen} setShowAdminScreen={setShowAdminScreen}
           showAdminForm={showAdminForm} setShowAdminForm={setShowAdminForm}
           addChild={addChild} setAddChild={setAddChild}
+          addParent={addParent} setAddParent={setAddParent}
           data={data} setData={setData}
           isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
           oldData={oldData} setOldData={setOldData}
@@ -70,6 +73,7 @@ function App() {
             isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
             setShowAdminForm={setShowAdminForm}
             addChild={addChild} setAddChild={setAddChild}
+            addParent={addParent} setAddParent={setAddParent}
             showAllNodes={showAllNodes}
             currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
             oldParentIds={oldParentIds} setOldParentIds={setOldParentIds}
@@ -89,6 +93,7 @@ function App() {
             setShowAdminForm={setShowAdminForm}
             isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
             addChild={addChild} setAddChild={setAddChild}
+            addParent={addParent} setAddParent={setAddParent}
             data={data} setData={setData}
             showAllNodes={showAllNodes}
             currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
