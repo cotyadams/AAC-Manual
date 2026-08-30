@@ -106,6 +106,11 @@ export default function AdminForm({
                         <input
                             type="checkbox"
                             id="top-level-checkbox"
+                            onChange={
+                                () => {
+                                    setNode({...node, node: !node.topLevel})
+                                }
+                            }
                         />
                         <label htmlFor="top-level-checkbox">Show on Home?</label>
                     </div>
