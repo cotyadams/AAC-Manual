@@ -74,8 +74,14 @@
 
 /* Fills every bit of vertical space the label isn't using (flex: 1 against
    the label's flex: 0 0 auto below), so the icon -- image or emoji -- is
-   always exactly as large as the node allows, never fixed/guessed. */
+   always exactly as large as the node allows, never fixed/guessed.
+   container-type: size makes *this* box (the icon's actual leftover
+   space, after the label has taken what it needs) the reference for the
+   emoji's cqmin below -- sizing off the outer button instead would cap
+   the emoji at a fixed fraction of the whole node regardless of how
+   little the label ends up using. */
 .grid-node-icon-wrap {
+  container-type: size;
   flex: 1 1 0;
   min-width: 0;
   min-height: 0;
@@ -97,9 +103,12 @@
 }
 
 .grid-node-icon {
-  /* cqmin (not cqw) so a short/narrow container still bounds the emoji in
-     both dimensions -- sizing off width alone could overflow a squat node */
-  font-size: clamp(1.75rem, 60cqmin, 6rem);
+  /* cqmin of the wrap (not the whole node, and not cqw) -- bounded by
+     whichever of the wrap's own width/height is smaller, so it's always
+     as large as possible without the emoji overflowing either edge. The
+     rem ceiling is a sanity cap, not a real-world limit (it would only
+     bind on an enormous node), unlike the old fixed 6rem cap. */
+  font-size: clamp(1.75rem, 88cqmin, 30rem);
   line-height: 1;
 }
 
