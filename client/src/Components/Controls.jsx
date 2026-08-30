@@ -19,6 +19,8 @@ function Controls({
     setData,
     isSelectLeaf,
     setIsSelectLeaf,
+    relationTarget,
+    setRelationTarget,
     oldData,
     setOldData,
     showAllNodes,
@@ -38,6 +40,7 @@ function Controls({
                             if (showAdminForm) {
                                 setShowAdminForm(false);
                                 setShowAdminScreen(true);
+                                setIsSelectLeaf({})
                             } else if (showPassForm) {
                                 setShowPassForm(false)
                             }
@@ -59,6 +62,13 @@ function Controls({
                     className="btn ctl-btn add-btn"
                     title="add TTS button"
                     onClick={() => {
+                        // mid add-child/add-parent selection: stash the node whose
+                        // relations we're building and blank the form so "+" creates
+                        // a brand-new node instead of re-opening the current one
+                        if (addChild || addParent) {
+                            setRelationTarget(isSelectLeaf)
+                            setIsSelectLeaf({})
+                        }
                         setShowAdminScreen(false)
                         setShowAdminForm(true)
                     }}
@@ -73,7 +83,7 @@ function Controls({
                     {showAllNodes ? "ShowTree" : "Show All"}
                 </button>}
                 {
-                    addChild &&
+                    addChild && !showAdminForm &&
                     <button
                         className="btn ctl-btn add-to-children"
                         onClick={() => {
@@ -88,7 +98,7 @@ function Controls({
                     </button>
                 }
                 {
-                    addParent &&
+                    addParent && !showAdminForm &&
                     <button
                         className="btn ctl-btn add-to-parents"
                         onClick={() => {

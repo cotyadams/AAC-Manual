@@ -22,6 +22,8 @@ export default function AdminForm({
     setAddChild,
     addParent,
     setAddParent,
+    relationTarget,
+    setRelationTarget,
     data,
     setData,
     showAllNodes,
@@ -87,9 +89,25 @@ export default function AdminForm({
                         e.preventDefault();
                         try {
                             const created = await apiCalls.createNode(node)
+                            let updatedData = [...data, created]
+
+                            // created via "+" while picking children/parents for another
+                            // node -- link the new node into that node's relations instead
+                            // of just dropping it in the flat node list
+                            if (relationTarget && relationTarget.id) {
+                                const parentId = addParent ? created.id : relationTarget.id
+                                const childId = addParent ? relationTarget.id : created.id
+                                const updatedNode = await apiCalls.updateNode(parentId, { addChildren: [childId] })
+                                const patchNode = (n) => (n.id === updatedNode.id ? updatedNode : n)
+                                updatedData = updatedData.map(patchNode)
+                                setOldData(oldData.map((level) => level.map(patchNode)))
+                                setIsSelectLeaf(addParent ? relationTarget : updatedNode)
+                                setRelationTarget({})
+                            }
+
+                            setData(updatedData)
                             setShowAdminForm(false)
                             setShowAdminScreen(true)
-                            setData([...data, created])
                         } catch (err) {
                             alert(`Failed to create node: ${err.message}`)
                         }
@@ -217,7 +235,10 @@ export default function AdminForm({
                                     setNode(newNode)
                                     setShowAdminForm(false)
                                     setShowAdminScreen(true)
-                                    setIsSelectLeaf({})
+                                    // restore the in-progress children/parents selection
+                                    // context if this blank form was opened via "+" from there
+                                    setIsSelectLeaf(relationTarget && relationTarget.id ? relationTarget : {})
+                                    setRelationTarget({})
                                 }
                         }
                     >

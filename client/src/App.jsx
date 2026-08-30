@@ -23,6 +23,10 @@ function App() {
   const [addChild, setAddChild] = useState(false)
   // when adding the node being edited as a child of an existing node (i.e. picking a parent) indicator
   const [addParent, setAddParent] = useState(false)
+  // the node whose children/parents list is being built via addChild/addParent,
+  // held here while the "+" button opens a blank form to create a brand-new
+  // node to add to that list (isSelectLeaf gets cleared for the blank form)
+  const [relationTarget, setRelationTarget] = useState({})
   const [data, setData] = fetchData();
   const [oldData, setOldData] = useState([]);
   // id of the node whose children are currently being displayed in tree mode (null at home/root)
@@ -56,6 +60,7 @@ function App() {
           addParent={addParent} setAddParent={setAddParent}
           data={data} setData={setData}
           isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
+          relationTarget={relationTarget} setRelationTarget={setRelationTarget}
           oldData={oldData} setOldData={setOldData}
           showAllNodes={showAllNodes} setShowAllNodes={setShowAllNodes}
           currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
@@ -94,6 +99,7 @@ function App() {
             isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
             addChild={addChild} setAddChild={setAddChild}
             addParent={addParent} setAddParent={setAddParent}
+            relationTarget={relationTarget} setRelationTarget={setRelationTarget}
             data={data} setData={setData}
             showAllNodes={showAllNodes}
             currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
