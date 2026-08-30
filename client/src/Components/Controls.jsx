@@ -25,20 +25,20 @@ function Controls({
             <div className="controls-left">
                 <button
                     onClick={() => navUpLayer({ data, setData, oldData, setOldData })}
-                    className="ctl-btn back-btn"
+                    className="btn ctl-btn back-btn"
                     title="Go back to categories"
                 >
                     ←
                 </button>
                 <button
                     onClick={() => console.log('click')}
-                    className="ctl-btn search-btn"
+                    className="btn ctl-btn search-btn"
                     title="Search symbols and categories"
                 >
                     🔍
                 </button>
                 {showAdminScreen && <button
-                    className="ctl-btn add-btn"
+                    className="btn ctl-btn add-btn"
                     title="add TTS button"
                     onClick={() => {
                         setShowAdminScreen(false)
@@ -50,7 +50,7 @@ function Controls({
                 {
                     addChild &&
                     <button
-                        className="ctl-btn add-to-children"
+                        className="btn ctl-btn add-to-children"
                         onClick={() => {
                             setIsSelectLeaf({})
                             setShowAdminScreen(false)
@@ -73,9 +73,10 @@ function Controls({
                                 setShowAdminScreen(false)
                                 setShowPassForm(false)
                                 setShowAdminForm(false)
+                                setAddChild(false)
                             }
                         }}
-                        className="ctl-btn admin-exit-btn"
+                        className="btn ctl-btn admin-exit-btn"
                         title="Exit admin mode"
                     >
                         ⚙️
@@ -83,7 +84,7 @@ function Controls({
                 ) : (
                     <button
                         onClick={() => console.log('click')}
-                        className="ctl-btn admin-enter-btn"
+                        className="btn ctl-btn admin-enter-btn"
                         title="Admin settings"
                     >
                         ⚙️
@@ -91,14 +92,14 @@ function Controls({
                 )}
                 <button
                     onClick={() => speak(ttsContent)}
-                    className="ctl-btn speak-btn"
+                    className="btn ctl-btn speak-btn"
                     title="Speak text"
                 >
                     🔊
                 </button>
                 <button
                     onClick={() => setTTsContent('')}
-                    className="ctl-btn clear-btn"
+                    className="btn ctl-btn clear-btn"
                     title="Clear text"
                 >
                     ✕

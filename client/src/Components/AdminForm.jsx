@@ -61,7 +61,7 @@ export default function AdminForm({
                     <label htmlFor="label-input">Label</label>
                     <input
                         id="label-input"
-                        className="label-input"
+                        className="text-input"
                         value={node.label}
                         placeholder="e.g. Eat"
                         onChange={(e) => { setNode({ ...node, label: e.target.value }) }}
@@ -71,7 +71,7 @@ export default function AdminForm({
                     <label htmlFor="icon-input">Icon</label>
                     <input
                         id="icon-input"
-                        className="icon-input"
+                        className="text-input icon-input"
                         value={node.icon}
                         placeholder="e.g. 🍎"
                         onChange={(e) => { setNode({ ...node, icon: e.target.value }) }}
@@ -81,7 +81,7 @@ export default function AdminForm({
                     <label htmlFor="description-input">Description</label>
                     <input
                         id="description-input"
-                        className="description-input"
+                        className="text-input"
                         value={node.description}
                         placeholder="e.g. I want to eat"
                         onChange={(e) => { setNode({ ...node, description: e.target.value }) }}
@@ -90,7 +90,7 @@ export default function AdminForm({
                 <div className="selection-container">
                     <button
                         type="button"
-                        className="children-selection"
+                        className="btn btn--soft"
                         onClick={() => {
                             setIsSelectLeaf(node);
                             setShowAdminForm(false);
@@ -98,20 +98,16 @@ export default function AdminForm({
                             setAddChild(true)
                         }}
                     >Children</button>
-                    <div className="top-level-checkbox-div">
+                    <div className="checkbox-field">
                         <input
                             type="checkbox"
                             id="top-level-checkbox"
-                            className="top-level-checkbox"
                         />
-                        <label
-                            htmlFor="top-level-checkbox"
-                            className="top-level-label"
-                        >Show on Home?</label>
+                        <label htmlFor="top-level-checkbox">Show on Home?</label>
                     </div>
                     <button
                         type="button"
-                        className="parents-selection"
+                        className="btn btn--soft"
                         onClick={() => {
                             setIsSelectLeaf(node);
                             setShowAdminForm(false);
@@ -122,14 +118,14 @@ export default function AdminForm({
                 </div>
                 <div className="node-options-container">
                     <button
-                        className="save-button"
+                        className="btn btn--primary"
                         type="submit"
                     >
                         Save
                     </button>
                     <button
                         type="button"
-                        className="delete-button"
+                        className="btn btn--danger"
                         onClick={
                             node.id ?
                                 () => {

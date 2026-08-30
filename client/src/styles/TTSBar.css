@@ -1,11 +1,24 @@
 .tts-bar {
-    display: flex;
-    width: 100%;
-    height: 10%;
-    flex-grow: 1;
-    font-size: 3rem;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    transition: border-color 0.2s ease;
-    text-align: center;
+  display: flex;
+  width: 100%;
+  height: 10%;
+  flex-grow: 1;
+  padding: 0 16px;
+  font-size: 3rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-panel);
+  border: 2px solid var(--color-border);
+  outline: none;
+  text-align: center;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tts-bar::placeholder {
+  color: var(--color-placeholder);
+}
+
+.tts-bar:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
 }

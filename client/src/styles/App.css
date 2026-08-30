@@ -1,12 +1,10 @@
 .App {
-  font-family: 'Helvetica Neue', sans-serif;
-  height: 100vh;
-  display: flexbox;
-  justify-content: center;
-  align-items: center;
+  min-height: 100vh;
+  background: var(--color-bg);
 }
 
 .app-main {
   height: 100%;
-  display: flexbox;
+  display: flex;
+  flex-direction: column;
 }
