@@ -57,28 +57,40 @@ export default function AdminForm({
                         setData([...data, node])
                     }
             }>
-                <input
-                    className="label-input"
-                    value={node.label}
-                    placeholder="label"
-                    onChange={(e) => { setNode({ ...node, label: e.target.value }) }}
-                />
-                <input
-                    className="icon-input"
-                    value={node.icon}
-                    placeholder="icon"
-                    onChange={(e) => { setNode({ ...node, icon: e.target.value }) }}
-                />
-                <input
-                    className="description-input"
-                    value={node.description}
-                    placeholder="description"
-                    onChange={(e) => { setNode({ ...node, description: e.target.value }) }}
-                />
+                <div className="form-field">
+                    <label htmlFor="label-input">Label</label>
+                    <input
+                        id="label-input"
+                        className="label-input"
+                        value={node.label}
+                        placeholder="e.g. Eat"
+                        onChange={(e) => { setNode({ ...node, label: e.target.value }) }}
+                    />
+                </div>
+                <div className="form-field">
+                    <label htmlFor="icon-input">Icon</label>
+                    <input
+                        id="icon-input"
+                        className="icon-input"
+                        value={node.icon}
+                        placeholder="e.g. 🍎"
+                        onChange={(e) => { setNode({ ...node, icon: e.target.value }) }}
+                    />
+                </div>
+                <div className="form-field">
+                    <label htmlFor="description-input">Description</label>
+                    <input
+                        id="description-input"
+                        className="description-input"
+                        value={node.description}
+                        placeholder="e.g. I want to eat"
+                        onChange={(e) => { setNode({ ...node, description: e.target.value }) }}
+                    />
+                </div>
                 <div className="selection-container">
                     <button
+                        type="button"
                         className="children-selection"
-                        placeholder="children"
                         onClick={() => {
                             setIsSelectLeaf(node);
                             setShowAdminForm(false);
@@ -89,15 +101,17 @@ export default function AdminForm({
                     <div className="top-level-checkbox-div">
                         <input
                             type="checkbox"
+                            id="top-level-checkbox"
                             className="top-level-checkbox"
                         />
-                        <h1
+                        <label
+                            htmlFor="top-level-checkbox"
                             className="top-level-label"
-                        >Show on Home?</h1>
+                        >Show on Home?</label>
                     </div>
                     <button
-                        className="children-selection"
-                        placeholder="children"
+                        type="button"
+                        className="parents-selection"
                         onClick={() => {
                             setIsSelectLeaf(node);
                             setShowAdminForm(false);
@@ -114,6 +128,7 @@ export default function AdminForm({
                         Save
                     </button>
                     <button
+                        type="button"
                         className="delete-button"
                         onClick={
                             node.id ?
