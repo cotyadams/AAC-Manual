@@ -20,7 +20,11 @@ function Controls({
     oldData,
     setOldData,
     showAllNodes,
-    setShowAllNodes
+    setShowAllNodes,
+    currentParentId,
+    setCurrentParentId,
+    oldParentIds,
+    setOldParentIds
 }) {
     return (
         <div id="controls-container">
@@ -35,7 +39,7 @@ function Controls({
                             } else if (showPassForm) {
                                 setShowPassForm(false)
                             }
-                            else { navUpLayer({ data, setData, oldData, setOldData }) }
+                            else { navUpLayer({ data, setData, oldData, setOldData, oldParentIds, setOldParentIds, setCurrentParentId }) }
                         }}
                     className="btn ctl-btn back-btn"
                     title="Go back to categories"

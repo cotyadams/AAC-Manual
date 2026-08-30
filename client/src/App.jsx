@@ -23,6 +23,9 @@ function App() {
   const [addChild, setAddChild] = useState(false)
   const [data, setData] = fetchData();
   const [oldData, setOldData] = useState([]);
+  // id of the node whose children are currently being displayed in tree mode (null at home/root)
+  const [currentParentId, setCurrentParentId] = useState(null);
+  const [oldParentIds, setOldParentIds] = useState([]);
   // when creating a child item for a current node
   // const [createChild, setCreateChild] = useState()
   // bool to indicate topLevel
@@ -52,6 +55,8 @@ function App() {
           isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
           oldData={oldData} setOldData={setOldData}
           showAllNodes={showAllNodes} setShowAllNodes={setShowAllNodes}
+          currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
+          oldParentIds={oldParentIds} setOldParentIds={setOldParentIds}
 
         />
 
@@ -66,6 +71,8 @@ function App() {
             setShowAdminForm={setShowAdminForm}
             addChild={addChild} setAddChild={setAddChild}
             showAllNodes={showAllNodes}
+            currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
+            oldParentIds={oldParentIds} setOldParentIds={setOldParentIds}
           />
         }
         {
@@ -83,6 +90,8 @@ function App() {
             isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
             addChild={addChild} setAddChild={setAddChild}
             data={data} setData={setData}
+            showAllNodes={showAllNodes}
+            currentParentId={currentParentId}
 
           />
         }

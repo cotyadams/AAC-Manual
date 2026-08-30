@@ -20,7 +20,9 @@ export default function AdminForm({
     addChild,
     setAddChild,
     data,
-    setData
+    setData,
+    showAllNodes,
+    currentParentId
 }) {
     const newNode = {
         "label": "",
@@ -140,8 +142,15 @@ export default function AdminForm({
                             node.id ?
                                 async () => {
                                     try {
-                                        await apiCalls.deleteNode(node.id)
-                                        let newData = data.filter((node) => node.id != isSelectLeaf.id)
+                                        if (!showAllNodes && currentParentId) {
+                                            // tree mode with a parent above it: just unlink from that parent
+                                            await apiCalls.updateNode(currentParentId, { removeChildren: [node.id] })
+                                        } else {
+                                            // view-all mode (or no parent context): delete the node entirely,
+                                            // which cascades and removes it from every parent's children in the database
+                                            await apiCalls.deleteNode(node.id)
+                                        }
+                                        let newData = data.filter((n) => n.id != node.id)
                                         setData(newData)
                                         setShowAdminForm(false);
                                         setShowAdminScreen(true)

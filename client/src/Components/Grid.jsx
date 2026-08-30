@@ -19,7 +19,11 @@ export default function Grid({
   setData,
   oldData,
   setOldData,
-  showAllNodes
+  showAllNodes,
+  currentParentId,
+  setCurrentParentId,
+  oldParentIds,
+  setOldParentIds
 }) {
   const [allNodes, setAllNodes] = useState([]);
 
@@ -49,6 +53,8 @@ export default function Grid({
           addChild={addChild} setAddChild={setAddChild}
           data={data} setData={setData}
           oldData={oldData} setOldData={setOldData}
+          currentParentId={currentParentId} setCurrentParentId={setCurrentParentId}
+          oldParentIds={oldParentIds} setOldParentIds={setOldParentIds}
         />
       ))}
     </div>

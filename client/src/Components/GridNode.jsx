@@ -19,7 +19,11 @@ export default function GridNode({
   data,
   setData,
   oldData,
-  setOldData
+  setOldData,
+  currentParentId,
+  setCurrentParentId,
+  oldParentIds,
+  setOldParentIds
 }) {
   return (
     <button className="grid-node" aria-label={node.label} onClick={(event) => {
@@ -39,7 +43,11 @@ export default function GridNode({
         data,
         setData,
         oldData,
-        setOldData
+        setOldData,
+        currentParentId,
+        setCurrentParentId,
+        oldParentIds,
+        setOldParentIds
       })
     }}>
       <span className="grid-node-icon" aria-hidden="true">{node.icon}</span>
@@ -65,7 +73,11 @@ async function onSelect({
   data,
   setData,
   oldData,
-  setOldData
+  setOldData,
+  currentParentId,
+  setCurrentParentId,
+  oldParentIds,
+  setOldParentIds
 }) {
 
 
@@ -98,6 +110,8 @@ async function onSelect({
 
     console.log('children: ', node.children)
     setOldData([...oldData, data]);
+    setOldParentIds([...oldParentIds, currentParentId]);
+    setCurrentParentId(node.id);
 
     console.log("oldData onFunction: ", oldData)
     console.log("oldData.len onFunction: ", oldData.length)
