@@ -15,6 +15,8 @@ function App() {
   const [showPassForm, setShowPassForm] = useState(false)
   const [showAdminScreen, setShowAdminScreen] = useState(false)
   const [showAdminForm, setShowAdminForm] = useState(false)
+  // when in admin mode, show every node flat (for easy editing) instead of the normal tree
+  const [showAllNodes, setShowAllNodes] = useState(false)
   // when editing a node, this is the node to edit
   const [isSelectLeaf, setIsSelectLeaf] = useState({})
   // when adding child to existing node indicator
@@ -49,6 +51,7 @@ function App() {
           data={data} setData={setData}
           isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
           oldData={oldData} setOldData={setOldData}
+          showAllNodes={showAllNodes} setShowAllNodes={setShowAllNodes}
 
         />
 
@@ -62,6 +65,7 @@ function App() {
             isSelectLeaf={isSelectLeaf} setIsSelectLeaf={setIsSelectLeaf}
             setShowAdminForm={setShowAdminForm}
             addChild={addChild} setAddChild={setAddChild}
+            showAllNodes={showAllNodes}
           />
         }
         {

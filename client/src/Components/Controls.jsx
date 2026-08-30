@@ -18,7 +18,9 @@ function Controls({
     isSelectLeaf,
     setIsSelectLeaf,
     oldData,
-    setOldData
+    setOldData,
+    showAllNodes,
+    setShowAllNodes
 }) {
     return (
         <div id="controls-container">
@@ -46,6 +48,13 @@ function Controls({
                     }}
                 >
                     +
+                </button>}
+                {showAdminScreen && <button
+                    className="btn ctl-btn toggle-view-btn"
+                    title={showAllNodes ? "Show normal tree structure" : "Show all nodes"}
+                    onClick={() => setShowAllNodes(!showAllNodes)}
+                >
+                    {showAllNodes ? "🌳" : "🗂️"}
                 </button>}
                 {
                     addChild &&

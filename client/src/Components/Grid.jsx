@@ -18,11 +18,28 @@ export default function Grid({
   data,
   setData,
   oldData,
-  setOldData
+  setOldData,
+  showAllNodes
 }) {
+  const [allNodes, setAllNodes] = useState([]);
+
+  useEffect(() => {
+    if (showAdminScreen && showAllNodes) {
+      apiCalls.fetchAllNodes().then(setAllNodes);
+    }
+  }, [showAdminScreen, showAllNodes]);
+
+  // Home (root) only shows nodes flagged topLevel; deeper layers show
+  // whatever children were navigated into. Admin's "show all" toggle
+  // bypasses both to show every node flat for easy editing.
+  const isHome = oldData.length === 0;
+  const visibleNodes = showAdminScreen && showAllNodes
+    ? allNodes
+    : isHome ? data.filter(node => node.topLevel) : data;
+
   return (
     <div className="grid">
-      {data.map(node => (
+      {visibleNodes.map(node => (
         <GridNode
           node={node} key={node.id}
           setTTsContent={setTTsContent} ttsContent={ttsContent}
