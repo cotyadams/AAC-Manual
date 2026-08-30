@@ -27,34 +27,38 @@ export default function AdminForm({
         "icon": "",
         "description": "",
         "children": [],
-        "topLevel:": true,
+        "topLevel": false,
     }
     //if current leaf exists, set as edit form, if not (when add node is hit), then make form blank
-    const [node, setNode] = useState(isSelectLeaf.id ? () => {
-        setShowAdminScreen(false)
-        setShowAdminForm(true)
-        return isSelectLeaf
-    } : newNode)
+    const [node, setNode] = useState(isSelectLeaf.id ? isSelectLeaf : newNode)
 
     return (
         <div className="admin-form">
             <form onSubmit={
                 isSelectLeaf.id ?
-                    (e) => {
+                    async (e) => {
                         e.preventDefault();
-                        console.log('true')
-                        apiCalls.updateNode(isSelectLeaf.id, { ...node })
-                        setShowAdminForm(false)
-                        setShowAdminScreen(true)
-                        setIsSelectLeaf({})
+                        try {
+                            const updated = await apiCalls.updateNode(isSelectLeaf.id, { ...node })
+                            setData(data.map((n) => n.id === isSelectLeaf.id ? updated : n))
+                            setShowAdminForm(false)
+                            setShowAdminScreen(true)
+                            setIsSelectLeaf({})
+                        } catch (err) {
+                            alert(`Failed to save changes: ${err.message}`)
+                        }
                     }
                     :
-                    (e) => {
+                    async (e) => {
                         e.preventDefault();
-                        apiCalls.createNode(node)
-                        setShowAdminForm(false)
-                        setShowAdminScreen(true)
-                        setData([...data, node])
+                        try {
+                            const created = await apiCalls.createNode(node)
+                            setShowAdminForm(false)
+                            setShowAdminScreen(true)
+                            setData([...data, created])
+                        } catch (err) {
+                            alert(`Failed to create node: ${err.message}`)
+                        }
                     }
             }>
                 <div className="form-field">
@@ -132,13 +136,17 @@ export default function AdminForm({
                         className="btn btn--danger"
                         onClick={
                             node.id ?
-                                () => {
-                                    apiCalls.deleteNode(node.id)
-                                    let newData = data.filter((node) => node.id != isSelectLeaf.id)
-                                    setData(newData)
-                                    setShowAdminForm(false);
-                                    setShowAdminScreen(true)
-                                    setIsSelectLeaf({})
+                                async () => {
+                                    try {
+                                        await apiCalls.deleteNode(node.id)
+                                        let newData = data.filter((node) => node.id != isSelectLeaf.id)
+                                        setData(newData)
+                                        setShowAdminForm(false);
+                                        setShowAdminScreen(true)
+                                        setIsSelectLeaf({})
+                                    } catch (err) {
+                                        alert(`Failed to delete node: ${err.message}`)
+                                    }
                                 }
                                 :
                                 () => {

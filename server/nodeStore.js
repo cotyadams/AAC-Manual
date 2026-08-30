@@ -22,6 +22,16 @@ function createStore(dbPath = 'aac.db') {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   db.exec(schema);
 
+  // Databases created before the topLevel column existed still have a
+  // `nodes` table, so the CREATE TABLE IF NOT EXISTS above is a no-op for
+  // them -- add the column by hand if it's still missing.
+  const hasTopLevelColumn = db
+    .prepare("SELECT 1 FROM pragma_table_info('nodes') WHERE name = 'topLevel'")
+    .get();
+  if (!hasTopLevelColumn) {
+    db.exec('ALTER TABLE nodes ADD COLUMN topLevel INTEGER NOT NULL DEFAULT 0');
+  }
+
   // ---------- internal helpers ----------
 
   function getChildIds(nodeId) {
@@ -181,7 +191,7 @@ function createStore(dbPath = 'aac.db') {
     if (updates.label !== undefined) fields.label = updates.label;
     if (updates.icon !== undefined) fields.icon = updates.icon;
     if (updates.description !== undefined) fields.description = updates.description;
-    if (updates.topLevel !== undefined) fields.topLevel = updates.topLevel;
+    if (updates.topLevel !== undefined) fields.topLevel = updates.topLevel ? 1 : 0;
 
     if (Object.keys(fields).length > 0) {
       const setClause = Object.keys(fields)

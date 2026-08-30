@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     label       TEXT NOT NULL,
     icon        TEXT,               -- emoji or icon identifier/path
     description TEXT,
+    topLevel    INTEGER NOT NULL DEFAULT 0,  -- 1 if node should show on the Home grid
     created_at  TEXT DEFAULT (datetime('now')),
     updated_at  TEXT DEFAULT (datetime('now'))
 );
