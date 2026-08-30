@@ -21,12 +21,12 @@
   justify-content: center;
   align-items: center;
   background: var(--color-panel);
-  /* color: var(--color-text); */
+  color: var(--color-text);
   font-family: inherit;
   border: none;
   font-weight: bold;
   line-height: 1.15;
-  padding: min(4rem, 8%);
+  padding: min(2rem, 6%);
   cursor: pointer;
   overflow: hidden;
   /* safety net only, shouldn't trigger */
@@ -42,6 +42,18 @@
 
 .grid-node:hover {
   background: var(--color-accent-soft);
+}
+
+/* while an admin is choosing a node to edit, flag every node red so it's
+   obvious admin mode is active; reverts automatically when it ends since
+   the class only applies while showAdminScreen is true */
+.grid-node-admin {
+  background: #c0392b;
+  color: #fff;
+}
+
+.grid-node-admin:hover {
+  background: #a93226;
 }
 
 .grid-node:focus-visible {
@@ -61,13 +73,16 @@
 }
 
 .grid-node-icon {
-  font-size: clamp(1.5rem, 32cqw, 3.75rem);
+  /* cqmin (not cqw) so a short/narrow container still bounds the icon in
+     both dimensions -- sizing off width alone could overflow a squat node */
+  font-size: clamp(1.75rem, 46cqmin, 5rem);
   line-height: 1;
-  margin: 4px;
+  margin: 2px;
 }
 
 .grid-node-label {
-  font-size: clamp(0.75rem, 14cqw, 1.6rem);
-  margin: 4px;
+  font-size: clamp(0.8rem, 15cqmin, 1.75rem);
+  line-height: 1.15;
+  margin: 2px;
   text-align: center;
 }

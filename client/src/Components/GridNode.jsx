@@ -30,7 +30,7 @@ export default function GridNode({
 }) {
   return (
     <button
-      className="grid-node"
+      className={`grid-node${showAdminScreen ? " grid-node-admin" : ""}`}
       aria-label={node.label}
       disabled={disabled}
       onClick={(event) => {
