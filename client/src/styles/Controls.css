@@ -1,19 +1,17 @@
+/* All control buttons are direct flex children here (see Controls.jsx)
+   so the browser's normal line-wrapping can pack them individually.
+   The admin button carries `margin-left: auto` below, which pins it
+   (and speak/clear after it) to the right edge on a single row, and
+   pulls the same group to the right edge of the bottom row if the bar
+   wraps — so add-to-children/add-to-parents land on that bottom row
+   with admin/speak/clear instead of getting a row of their own. */
 #controls-container {
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
   padding: 8px;
   background: var(--color-panel);
   border-bottom: 1px solid var(--color-border);
-}
-
-.controls-left,
-.controls-right {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  width: fit-content;
 }
 
 .ctl-btn {
@@ -57,6 +55,17 @@
 .admin-enter-btn,
 .admin-exit-btn {
   background-color: var(--color-neutral);
+}
+
+/* Pins admin/speak/clear to the right edge of their row. On a single
+   row that's the same right-aligned group the old two-column layout
+   gave; if the bar wraps, this same margin re-pins them to the right
+   edge of the bottom row, with add-to-children/add-to-parents (which
+   precede this button in DOM order) filling in from the left of that
+   same row. */
+.admin-enter-btn,
+.admin-exit-btn {
+  margin-left: auto;
 }
 
 .back-btn:hover,
